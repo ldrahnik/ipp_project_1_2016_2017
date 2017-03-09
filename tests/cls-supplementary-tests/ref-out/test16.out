@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class name="B" kind="abstract">
+    <inheritance>
+        <from name="C" privacy="public"/>
+    </inheritance>
+    <public>
+        <attributes>
+            <attribute name="myatt" type="int *" scope="instance">
+                <from name="C"/>
+            </attribute>
+            <attribute name="test" type="int *" scope="instance">
+                <from name="C"/>
+            </attribute>
+            <attribute name="uuu" type="int *" scope="instance">
+                <from name="C"/>
+            </attribute>
+        </attributes>
+        <methods>
+            <method name="is_real" type="bool" scope="instance">
+                <virtual pure="yes"/>
+                <arguments>
+                    <argument name="a" type="int"/>
+                    <argument name="b" type="int"/>
+                    <argument name="c" type="A"/>
+                </arguments>
+            </method>
+        </methods>
+    </public>
+    <protected>
+        <attributes>
+            <attribute name="the_answer" type="int" scope="static"/>
+            <attribute name="question" type="char32_t *" scope="instance">
+                <from name="C"/>
+            </attribute>
+        </attributes>
+        <methods>
+            <method name="the_answer" type="int" scope="static">
+                <from name=""/>
+                <virtual pure="no"/>
+                <arguments></arguments>
+            </method>
+        </methods>
+    </protected>
+</class>

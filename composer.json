@@ -1,0 +1,25 @@
+{
+    "name": "ldrahnik/ipp_1_project",
+    "authors": [
+        {
+            "name": "Lukáš Drahník",
+            "email": "ldrahnik@gmail.com"
+        },
+        {
+            "name": "Lukáš Drahník",
+            "email": "xdrahn00@stud.fit.vutbr.cz"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "CLS\\": "src/",
+            "CLS\\CPP\\": "src/cpp",
+            "CLS\\CPP\\Structure\\": "src/cpp/structure",
+            "CLS\\CPP\\Structure\\Object\\": "src/cpp/structure/object",
+            "CLS\\CPP\\Structure\\Object\\Type\\": "src/cpp/structure/object/type",
+            "CLS\\CPP\\Exception\\": "src/cpp/exception",
+            "CLS\\XML\\": "src/xml"
+        }
+    }
+}

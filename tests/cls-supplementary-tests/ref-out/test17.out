@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class name="A" kind="concrete">
+    <private>
+        <methods>
+            <method name="foooo" type="unsigned short int" scope="">
+                <virtual pure="no"/>
+                <arguments>
+                    <argument name="test" type="unsigned short int"/>
+                    <argument name="test2" type="unsigned short int *"/>
+                </arguments>
+            </method>
+        </methods>
+    </private>
+</class>
