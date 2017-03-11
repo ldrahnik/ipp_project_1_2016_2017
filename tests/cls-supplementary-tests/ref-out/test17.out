@@ -2,7 +2,7 @@
 <class name="A" kind="concrete">
     <private>
         <methods>
-            <method name="foooo" type="unsigned short int" scope="">
+            <method name="foooo" type="unsigned short int" scope="instance">
                 <virtual pure="no"/>
                 <arguments>
                     <argument name="test" type="unsigned short int"/>

@@ -12,6 +12,7 @@
 namespace CLS\CPP\Structure\Object;
 
 use CLS\CPP\Structure\Object\Type\CPPPrivacy;
+use CLS\CPP\Structure\Object\Type\CPPPScope;
 
 /**
  * Class ClassMethod.
@@ -55,11 +56,11 @@ class CPPClassMethod implements CPPClassElement
      * @param string $fromInheritanceClassName
      * @param boolean $pureVirtual
      */
-    public function __construct($name, $type = null, $scope = null, $privacy = CPPPrivacy::PRIVATE_TYPE, $arguments = array(), $virtual = false, $fromInheritanceClassName = null, $pureVirtual = false)
+    public function __construct($name, $type = null, $scope = null, $privacy = null, $arguments = array(), $virtual = false, $fromInheritanceClassName = null, $pureVirtual = false)
     {
         $this->name = $name;
         $this->type = $type;
-        $this->scope = $scope;
+        $this->scope = $scope ? $scope : 'instance';
         $this->privacy = $privacy ? $privacy : CPPPrivacy::PRIVATE_TYPE;
         $this->arguments = $arguments;
         $this->virtual = $virtual;

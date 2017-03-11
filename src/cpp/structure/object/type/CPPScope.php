@@ -12,7 +12,7 @@
 namespace CLS\CPP\Structure\Object\Type;
 
 /**
- * Class CPPPScopeType.
+ * Class CPPPScope.
  */
 class CPPPScope {
 

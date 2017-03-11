@@ -12,7 +12,7 @@
 namespace CLS\CPP\Structure\Object\Type;
 
 /**
- * Class CPPPrivacyType.
+ * Class CPPPrivacy.
  */
 class CPPPrivacy
 {

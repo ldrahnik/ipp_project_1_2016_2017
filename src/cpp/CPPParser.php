@@ -11,6 +11,7 @@ namespace CLS\CPP;
  * file that was distributed with this source code.
  */
 
+use CLS\CPP\Error\Error;
 use CLS\CPP\Exception\ScopeWithoutAnyVariableOrMethod;
 use CLS\CPP\Structure\Object\CPPClass;
 use CLS\CPP\Structure\Object\CPPClassAttribute;
@@ -20,6 +21,7 @@ use CLS\CPP\Structure\Object\CPPInheritance;
 use CLS\CPP\Structure\Object\Type\CPPClassAttribute as CPPClassAttributeType;
 use CLS\CPP\Structure\Object\Type\CPPClassKind;
 use CLS\CPP\Structure\Object\Type\CPPPrivacy;
+use CLS\CPP\Structure\Object\Type\CPPPScope;
 
 /**
  * Class CPPParser.
@@ -98,9 +100,9 @@ class CPPParser
             $this->recursiveParser();
             return 0;
         } catch (ScopeWithoutAnyVariableOrMethod $scopeWithoutAnyVariableOrMethod) {
-            return 21;
+            return ERROR::SCOPE_WITHOUT_ANY_VARIABLE;
         } catch (\Exception $exception) {
-            return 1;
+            return Error::STANDARD;
         }
     }
 
@@ -291,6 +293,9 @@ class CPPParser
                 }
 
                 if (CPPPrivacy::isStatic($token)) {
+                    if($this->method && $this->method->isVirtual()) {
+                        return 1;
+                    }
                     $this->scope = CPPPrivacy::STATIC_TYPE;
                     if ($this->recursiveParser(CPPParserState::CLASS_STATEMENT)) {
                         return 1;
@@ -311,8 +316,8 @@ class CPPParser
                             $this->method = new CPPClassMethod(
                                 null,
                                 null,
-                                'instance',
-                                $this->privacy ? $this->privacy : CPPPrivacy::PRIVATE_TYPE,
+                                null,
+                                $this->privacy,
                                 array(),
                                 true);
                             if ($this->recursiveParser(CPPParserState::METHOD)) {
@@ -608,7 +613,15 @@ class CPPParser
                     } else {
                         if ($token == CPPParserState::LEFT_BRACKET) {
                             $this->privacyWithAtleastOneVariableOrMethod = true;
-                            $this->method = new CPPClassMethod($this->name, $this->type, $this->scope, $this->privacy, array(), false, $this->class->getName());
+                            $this->method = new CPPClassMethod(
+                                $this->name,
+                                $this->type,
+                                null,
+                                $this->privacy,
+                                array(),
+                                false,
+                                $this->class->getName()
+                            );
                             $this->class->addMethod($this->method);
 
                             if ($this->recursiveParser(CPPParserState::METHOD_ARGUMENTS)) {

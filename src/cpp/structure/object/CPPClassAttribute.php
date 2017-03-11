@@ -12,6 +12,7 @@
 namespace CLS\CPP\Structure\Object;
 
 use CLS\CPP\Structure\Object\Type\CPPPrivacy;
+use CLS\CPP\Structure\Object\Type\CPPPScope;
 
 /**
  * Class ClassAttribute.

@@ -19,6 +19,7 @@
             "CLS\\CPP\\Structure\\Object\\": "src/cpp/structure/object",
             "CLS\\CPP\\Structure\\Object\\Type\\": "src/cpp/structure/object/type",
             "CLS\\CPP\\Exception\\": "src/cpp/exception",
+            "CLS\\CPP\\Error\\": "src/cpp/error",
             "CLS\\XML\\": "src/xml"
         }
     }

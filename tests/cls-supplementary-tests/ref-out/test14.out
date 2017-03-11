@@ -26,14 +26,12 @@
     </public>
     <protected>
         <attributes>
-            <attribute name="the_answer" type="int" scope="static"/>
             <attribute name="question" type="char32_t *" scope="instance">
                 <from name="C"/>
             </attribute>
         </attributes>
         <methods>
             <method name="the_answer" type="int" scope="static">
-                <from name=""/>
                 <virtual pure="no"/>
                 <arguments></arguments>
             </method>

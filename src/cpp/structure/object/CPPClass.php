@@ -49,14 +49,14 @@ class CPPClass
      */
     function __construct(
         $name,
-        $kind = CPPClassKind::CONCRETE_CLASS,
+        $kind = null,
         $inheritances = array(),
         $attributes = array(),
         $methods = array(),
         $conflicts = array()
     ) {
         $this->name = $name;
-        $this->kind = $kind;
+        $this->kind = $kind ? $kind : CPPClassKind::CONCRETE_CLASS;
         $this->attributes = $attributes;
         $this->methods = $methods;
         $this->inheritances = $inheritances;

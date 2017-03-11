@@ -12,6 +12,7 @@
 namespace CLS;
 
 use CLS\CPP\CPPParser;
+use CLS\CPP\Error\Error;
 use CLS\CPP\Structure\Object\CPPClass;
 use CLS\CPP\Structure\Object\CPPClassAttribute;
 use CLS\CPP\Structure\Object\CPPClassMethod;
@@ -81,14 +82,15 @@ class CLSParser
         } else {
             if (!($file = fopen($this->input, "r"))) {
                 if (!($file = fopen(__DIR__ . $this->input, "r"))) {
-                    return 1;
+                    return Error::UNEXISTING_INPUT_FILE_OR_ERROR_WHEN_OPENING_INPUT_FILE;
                 }
             }
             $contentToParse = fread($file, filesize($this->input));
             fclose($file);
+            return $this->parse($contentToParse);
         }
 
-        return $this->parse($contentToParse);
+        return 1;
     }
 
     /**
@@ -475,7 +477,10 @@ class CLSParser
             echo $result;
         } else {
             if (!($file = fopen($this->output, "w"))) {
-                return 1;
+                return Error::ERROR_WHEN_OPENING_OR_WRITING_OUTPUT_FILE;
+            }
+            if (fwrite($file, $result) === FALSE) {
+                return Error::ERROR_WHEN_OPENING_OR_WRITING_OUTPUT_FILE;
             }
             fwrite($file, $result);
             fclose($file);

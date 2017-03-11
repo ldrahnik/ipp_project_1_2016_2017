@@ -43,5 +43,14 @@
                 </attribute>
             </attributes>
         </protected>
+        <private>
+            <methods>
+                <method name="f" type="int" scope="instance">
+                    <from name="A" />
+                    <virtual pure="yes" />
+                    <arguments></arguments>
+                </method>
+            </methods>
+        </private>
     </class>
 </model>

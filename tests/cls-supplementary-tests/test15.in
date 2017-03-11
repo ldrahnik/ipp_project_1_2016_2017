@@ -11,5 +11,5 @@ class B : public C {
     protected:
         static int the_answer(void);
     public:
-        virtual bool is_real(int a, int b, int c) = 0;
+        virtual bool is_real(int a, int b, int &c) = 0;
 };
