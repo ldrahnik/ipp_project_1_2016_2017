@@ -476,13 +476,12 @@ class CLSParser
         if ($this->output == STDOUT) {
             echo $result;
         } else {
-            if (!($file = fopen($this->output, "w"))) {
+            if (!($file = fopen($this->output, "w+"))) {
                 return Error::ERROR_WHEN_OPENING_OR_WRITING_OUTPUT_FILE;
             }
             if (fwrite($file, $result) === FALSE) {
                 return Error::ERROR_WHEN_OPENING_OR_WRITING_OUTPUT_FILE;
             }
-            fwrite($file, $result);
             fclose($file);
         }
 

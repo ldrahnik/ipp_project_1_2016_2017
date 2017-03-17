@@ -1,0 +1,1 @@
+class A { unsigned short int foooo(unsigned short int test, unsigned short int *test2);};
