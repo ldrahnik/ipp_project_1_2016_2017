@@ -20,7 +20,7 @@ $clsArgumentParser = new CLSArgumentParser();
 $result = $clsArgumentParser->run();
 
 if($result != 0) {
-    return $result;
+    exit($result);
 }
 
 $clsParser = new CLSParser(
@@ -31,4 +31,9 @@ $clsParser = new CLSParser(
     $clsArgumentParser->getOptionValue(CLSOption::DETAILS),
     $clsArgumentParser->isOptionSet(CLSOption::DETAILS) && $clsArgumentParser->isOptionSet(CLSOption::CONFLICTS)
 );
-return $clsParser->run();
+
+$result = $clsParser->run();
+
+if($result != 0) {
+    exit($result);
+}
