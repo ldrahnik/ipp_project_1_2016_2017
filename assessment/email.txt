@@ -1,0 +1,170 @@
+
+dnocení projektu IPP 2016/2017 - Úkol 1 / CLS / php / xdrahn00
+===============================================================
+
+Dobrý den,
+jelikož jste provedl/a odevzdání úlohy 1 projektu do IPP 2016/2017, zasíláme Vám následující zpětnou vazbu doplňující bodové hodnocení v IS FIT.
+
+Číselné hodnocení zde uvedené je v minibodech, jejichž převod na finální body se řídí několika pravidly:
+  1) minibody za dokumentaci přepočteme kurzem 100 minibodů = 1 bod
+  2) minibody za automatické hodnocení skriptu se vyhodnotí dle kurzu specifickém pro Vaši úlohu:
+        CLS	95 mb = 1 bod
+Nakonec následuje korelace a zaokrouhlení dle informací o hodnocení v obecném zadání.
+
+Hodnocené úlohy zatím nebyly testovány na plagiátorství (bude provedeno do prvního termínu zkoušky).
+
+Úloha byla nejdříve automaticky rozbalena z odevzdaného archivu a pak byly spuštěny testy na serveru Merlin. Hodnotící testy nebudou zveřejněny. Hodnocení v rámci dokumentace dále zahrnuje také hodnocení kvality zdrojových kódů, komentářů atd.
+
+V případě nesouhlasu s hodnocením je možné využít osobní reklamace ve vypsaných termínech (viz IS FIT, Termíny IPP, Reklamace hodnocení 1. úlohy). Projděte si i komentář termínu s pokyny. Na individuální elektronické dotazy bude reagováno s nižší prioritou.
+
+
+Hodnocení dokumentace:
+----------------------
+  Získané minibody: 160
+  Komentář k hodnocení: FORM (-20, číslování: 1.3 je použito dokonce třikrát), KAPTXT, SHORT (-10, použití „například“ místo úplného výčtu), CONTENT (-10, nepodstatné informace „Tento objekt je sám o sobě velice prostý, ale nezbytně nutný.“);;
+
+Vysvětlivky zkratek v dokumentaci:
+  CH = pravopisné chyby, překlepy
+  FORMAT = špatný formát vzhledu dokumentu (nedodrženy požadavky)
+  SHORT = nesplňuje minimální požadavky na délku či obsah
+  STRUCT = nevhodně strukturováno (např. bez nadpisů)
+  MISSING = dokumentace nebyla odevzdána
+  COPY = text obsahuje úryvky ze zadání nebo cizí necitované materiály
+  STYLE = stylizace vět, nečitelnost, nesrozumitelnost
+  COMMENT = chybějící nebo nedostatečné komentáře ve zdrojovém textu
+  FILO = chybí či nedostatečná filosofie návrhu (abstraktní popis struktury programu, co následuje za čím)
+  SRCFORMAT = opravdu velmi špatná štábní kultura zdrojového kódu
+  LANG (jen pro informaci) = míchání jazyků (většinou anglické termíny v českém textu)
+  HOV (jen pro informaci) = hovorové nebo nevhodné slangové výrazy
+  PRED (jen pro informaci) = pozor na neslabičné předložky na konci řádků
+  FORM (jen pro informaci) = nepěkná úprava, nekonzistentní velikost a typ písma apod.
+  BLOK (jen pro informaci) = chybí zarovnaní do bloku místo méně pěkného zarovnání na prapor (doleva)
+  KAPTXT (jen pro informaci) = mezi nadpisem a jeho podnadpisem by měl být vždy nějaký text
+  MEZ (jen pro informaci) = za otevírající nebo před zavírající závorku mezera nepatří
+  ICH (jen pro informaci) = ich-forma (psaní v první osobě jednotného čísla) není většinou vhodná pro programovou dokumentaci
+  TERM = problematická terminologie (neobvyklá, nepřesná či přímo špatná)
+  SAZBA (jen pro informaci) = alespoň identifikátory proměnných a funkcí se patří sázet písmem s jednotnou šířkou písmen (např. font Courier)
+  OK = k dokumentaci byly maximálně minoritní připomínky
+
+
+Informace o rozbalení odevzdaného archívu:
+------------------------------------------
+Extracting xdrahn00/xdrahn00-CLS.zip archive..
+Archive:  xdrahn00-CLS.zip
+  inflating: CLS-doc.pdf             
+  inflating: src/CLSArgumentParser.php  
+  inflating: src/CLSMode.php         
+  inflating: src/CLSOption.php       
+  inflating: src/CLSParser.php       
+  inflating: src/CLS.php             
+   creating: src/cpp/
+   creating: src/cpp/exception/
+  inflating: src/cpp/exception/ScopeWithoutAnyVariableOrMethod.php  
+   creating: src/cpp/structure/
+   creating: src/cpp/structure/object/
+  inflating: src/cpp/structure/object/CPPClass.php  
+  inflating: src/cpp/structure/object/CPPInheritance.php  
+  inflating: src/cpp/structure/object/CPPClassMethodArgument.php  
+  inflating: src/cpp/structure/object/CPPClassAttribute.php  
+  inflating: src/cpp/structure/object/CPPClassElement.php  
+   creating: src/cpp/structure/object/type/
+  inflating: src/cpp/structure/object/type/CPPClassKind.php  
+  inflating: src/cpp/structure/object/type/CPPPrivacy.php  
+  inflating: src/cpp/structure/object/type/CPPClassAttribute.php  
+  inflating: src/cpp/structure/object/type/CPPScope.php  
+  inflating: src/cpp/structure/object/CPPClassMethod.php  
+  inflating: src/cpp/CPPParserState.php  
+  inflating: src/cpp/CPPParser.php   
+   creating: src/xml/
+  inflating: src/xml/XMLElement.php  
+  inflating: CLS.php                 
+  inflating: composer.json           
+   creating: vendor/
+  inflating: vendor/autoload.php     
+   creating: vendor/composer/
+  inflating: vendor/composer/autoload_static.php  
+  inflating: vendor/composer/autoload_real.php  
+ extracting: vendor/composer/installed.json  
+  inflating: vendor/composer/autoload_classmap.php  
+  inflating: vendor/composer/ClassLoader.php  
+  inflating: vendor/composer/autoload_namespaces.php  
+  inflating: vendor/composer/autoload_psr4.php  
+  inflating: vendor/composer/LICENSE  
+  inflating: cls.php                 
+ extracting: rozsireni               
+  inflating: readme.md               
+   creating: src/cpp/error/
+  inflating: src/cpp/error/Error.php  
+Setting read-right to *.php, *.class.php *.lib.php *.inc, and rozsireni...
+Checking file cls.php as script filename...
+Checking file CLS.php as script filename...
+Script filename (cls.php) is OK.
+
+
+Hodnocení skriptu (základní i rozšířené testy):
+-----------------------------------------------
+Následuje dvojtečkou oddělený seznam testů.
+  Jméno testu:Vaše hodnocení [mb]:[rozšíření]:Metadata testu:Komentář do konce řádku.
+Na konci naleznete celkový součet v nenormalizovaných minibodech.
+
+tests/basic/test01:10:[]:tests/basic/test01.cmd:test01: zkouska parametru --help (nekontroluje vystup na stdout)
+tests/basic/test02:0:[]:tests/basic/test02.cmd:test02: test parametru --help s jinym
+tests/basic/test03:10:[]:tests/basic/test03.cmd:test03: Zkouska --help vypisovaneho na stdout
+tests/cls/test04:0:[]:tests/cls/test04.cmd:test4: testXX: Prazdny vstup
+tests/cls/test05:5:[]:tests/cls/test05.cmd:test5: testXX: Vypsani detailu prazdne tridy
+tests/cls/test06:0:[]:tests/cls/test06.cmd:test6: testXX: Detaily nezname tridy
+tests/cls/test07:10:[]:tests/cls/test07.cmd:test7: testXX: Strom jednoduche linearni dedicnosti
+tests/cls/test08:10:[]:tests/cls/test08.cmd:test8: testXX: Zakladni vypis, jedna dvojnasobna dedicnost na zacatku
+tests/cls/test09:0:[]:tests/cls/test09.cmd:test9: testXX: Detail tridy bez dedicnosti
+tests/cls/test10:10:[]:tests/cls/test10.cmd:test10: testXX: Jednoduche zdedeni atributu
+tests/cls/test11:15:[]:tests/cls/test11.cmd:test11: testXX: Nezdedeni private atributu
+tests/cls/test12:15:[]:tests/cls/test12.cmd:test12: testXX: Nezdedeni private atributu ziskaneho dedenim
+tests/cls/test13:15:[]:tests/cls/test13.cmd:test13: testXX: Zmena urovne privacy pri dedeni
+tests/cls/test14:0:[]:tests/cls/test14.cmd:test14: testXX:  Zmena urovne privacy klicovym slovem using
+tests/cls/test15:0:[]:tests/cls/test15.cmd:test15: testXX:  Dedeni po uziti kl. slova using
+tests/cls/test16:0:[]:tests/cls/test16.cmd:test16: testXX: Abstraktni trida
+tests/cls/test17:0:[]:tests/cls/test17.cmd:test17: testXX: Zdedeni z abstraktni tridy bez prepsani ciste virtualni metody
+tests/cls/test18:0:[]:tests/cls/test18.cmd:test18: testXX: Probublani abstraktnosti mezi dalsi tridy
+tests/cls/test19:0:[]:tests/cls/test19.cmd:test19: testXX: Probublani abstraktnosti skrze private pure virtual metodu
+tests/cls/test20:0:[]:tests/cls/test20.cmd:test20: testXX:  Trojuhelnik konflikt
+tests/cls/test21:25:[]:tests/cls/test21.cmd:test21: testXX: Reseni trojuhelnik. konfliktu prepsanim
+tests/cls/test22:25:[]:tests/cls/test22.cmd:test22: testXX: Reseni konfliktu urcenim odkud dedit (using)
+tests/cls/test23:0:[]:tests/cls/test23.cmd:test23: testXX:  Trojuhelnik konflikt - metody se stejnou signaturou
+tests/cls/test24:0:[]:tests/cls/test24.cmd:test24: testXX:  Trojuhelnik konflikt - metody s ruznou signaturou
+tests/cls/test25:0:[]:tests/cls/test25.cmd:test25: testXX:  Trojuhelnik konflikt - metody se stejnou signaturou - reseni prepsanim metodou se stejnou signaturou
+tests/cls/test26:0:[]:tests/cls/test26.cmd:test26: testXX:  Trojuhelnik konflikt - metody se stejnou signaturou - reseni prepsanim metodou s ruznou signaturou
+tests/cls/test27:0:[]:tests/cls/test27.cmd:test27: testXX: Diamant konflikt
+tests/cls/test28:0:[]:tests/cls/test28.cmd:test28: testXX: Diamant konflikt (konflikt v nedostupnych clenech)
+tests/cls/test29:0:[]:tests/cls/test29.cmd:test29: testXX: Diamant konflikt - nevhodne reseni pomoci using (zachova nejednoznacnost bazove tridy)
+tests/cls/test30:25:[]:tests/cls/test30.cmd:test30: testXX: Diamant konflikt - reseni prepsanim v cilove tride
+tests/cls/test31:25:[]:tests/cls/test31.cmd:test31: testXX: Diamant konflikt - reseni prepsanim sporneho atributu v mezitride k cilove
+tests/cls/test32:0:[]:tests/cls/test32.cmd:test32: testXX: Stridani abstraktnich/konkretnich trid uvnitr schematu
+tests/cls/test33:0:[]:tests/cls/test33.cmd:test33: testXX: Vsechny mozne typy
+tests/cls/test34:0:[]:tests/cls/test34.cmd:test34: testXX: Staticke atributy a metody
+tests/cls/test35:0:[]:tests/cls/test35.cmd:test35: testXX: Staticke atributy a metody - dedeni
+tests/cls/test36:10:[]:tests/cls/test36.cmd:test36: testXX: Dedeni od sebe sama
+tests/cls/test37:0:[]:tests/cls/test37.cmd:test37: Dummy test
+tests/cls/test38:0:[]:tests/cls/test38.cmd:test38: Dummy test
+tests/cls/test39:0:[]:tests/cls/test39.cmd:test39: testXX: Definovane trida jako mozny dat. typ
+tests/cls/test40:0:[]:tests/cls/test40.cmd:test40: Dummy test
+tests/cls/test41:0:[]:tests/cls/test41.cmd:test41: testXX: Dummy test
+tests/cls/test42:25:[]:tests/cls/test42.cmd:test42: testXX: Dedeni od mnoha trid - schema
+tests/cls/test43:25:[]:tests/cls/test43.cmd:test43: testXX: Dedeni od mnoha trid - detail
+tests/cls/test44:0:[]:tests/cls/test44.cmd:test44: testXX: Pretezovani metod
+tests/cls/test45:0:[]:tests/cls/test45.cmd:test45: testXX: Rozdeleni private/public/protected do vice casti
+tests/cls/test46:15:[]:tests/cls/test46.cmd:test46: testXX: pretty-xml bez k
+tests/cls/test47:15:[]:tests/cls/test47.cmd:test47: testXX: pretty-xml s k > 4
+tests/cls/test48:15:[]:tests/cls/test48.cmd:test48: testXX: pretty-xml s k < 4
+tests/cls/test49:0:[]:tests/cls/test49.cmd:test49: testXX: Prepsani pretezovane metody
+tests/cls/test50:0:[]:tests/cls/test50.cmd:test50: testXX: Dedeni konstruktoru/destuktoru
+tests/cls/test51:0:[CFL]:tests/cls/test51.cmd:test51: testXX: Spravna A->C B->C dedicnost (s prepsanim konfliktu v C)
+tests/cls/test52:0:[CFL]:tests/cls/test52.cmd:test52: testXX: Konflikt pri A->C B->C dedicnosti
+tests/cls/test53:0:[CFL]:tests/cls/test53.cmd:test53: testXX: Konflikt v dedicnosti typu diamant
+tests/cls/test54:0:[CFL]:tests/cls/test54.cmd:test54: testXX: Konflikt v dedicnosti typu diamant - konflikt v nedostupnych clenech
+tests/cls/test55:0:[CFL]:tests/cls/test55.cmd:test55: testXX: Konflikt po ceste k vypisovanemu clenu
+ZAKLAD MINIBODU:305
+BONUS  MINIBODU:0
+CELKEM MINIBODU:305
+
+
+KONEC VÝPISU HODNOCENÍ
