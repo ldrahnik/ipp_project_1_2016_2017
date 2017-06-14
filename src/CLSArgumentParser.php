@@ -45,9 +45,16 @@ class CLSArgumentParser
         $longOptions = $this->getLongOptions();
         $options = getopt("", $longOptions);
 
+        // check duplicates
+        if($this->checkDuplicates($options) != 0) {
+            return 1;
+        }
+
+        // display help
         if (array_key_exists(CLSOption::HELP, $options)) {
             return count($options) == 1 ? $this->displayHelp() : 1;
         }
+
         foreach ($this->options as $name => $value) {
             if (array_key_exists($name, $options)) {
                 if ($name == CLSOption::DETAILS) {
@@ -114,6 +121,19 @@ class CLSArgumentParser
             CLSOption::get(CLSOption::DETAILS, '::'),
             CLSOption::CONFLICTS
         );
+    }
+
+    /**
+     * @param $options
+     * @return int
+     */
+    private function checkDuplicates($options) {
+        foreach ($options as $name => $value) {
+            if (is_array($value)) {
+                return 1;
+            }
+        }
+        return 0;
     }
 
 }
