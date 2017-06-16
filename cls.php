@@ -37,3 +37,5 @@ $result = $clsParser->run();
 if($result != 0) {
     exit($result);
 }
+
+exit(0);
