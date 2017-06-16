@@ -386,7 +386,10 @@ class CLSParser
         $xmlElements = array();
 
         if ($this->detailsModeClass) {
-            $xmlElements[] = $this->generateClassDetail($parsedClasses[$this->detailsModeClass]);
+            // append only if details class exists
+            if(array_key_exists($this->detailsModeClass, $parsedClasses)) {
+                $xmlElements[] = $this->generateClassDetail($parsedClasses[$this->detailsModeClass]);
+            }
         } else {
             $xmlElements[] = $model = new XMLElement('model');
             foreach ($parsedClasses as $name => $class) {
