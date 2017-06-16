@@ -11,6 +11,8 @@
 
 namespace CLS;
 
+use CLS\CPP\Error\Error;
+
 /**
  * Class CLSArgumentParser.
  */
@@ -44,22 +46,22 @@ class CLSArgumentParser
     {
         $longOptions = $this->getLongOptions();
         $options = getopt("", $longOptions);
-        $all = getopt("", array_merge(range('a', 'z'), range('A', 'Z'), range('0', '9')));
+        $all = getopt(implode(array_merge(range('a', 'z'), range('A', 'Z'), range('0', '9'))));
         $wrong = array_diff(array_keys($all), array_keys($options));
 
         // wrong parameters
         if (!empty($wrong)) {
-            return 12;
+            return Error::BAD_FORMAT_OF_INPUT_ARGS_AND_OPTIONS;
         }
 
         // duplicates
         if($this->checkDuplicates($options) != 0) {
-            return 12;
+            return Error::BAD_FORMAT_OF_INPUT_ARGS_AND_OPTIONS;
         }
 
         // help
         if (array_key_exists(CLSOption::HELP, $options)) {
-            return count($options) == 1 ? $this->displayHelp() : 1;
+            return count($options) == 1 ? $this->displayHelp() : Error::BAD_FORMAT_OF_INPUT_ARGS_AND_OPTIONS;
         }
 
         // processing
@@ -67,7 +69,7 @@ class CLSArgumentParser
             if (array_key_exists($name, $this->options)) {
                 $this->options[$name] = $options[$name];
             } else {
-                return 12;
+                return Error::BAD_FORMAT_OF_INPUT_ARGS_AND_OPTIONS;
             }
         }
 
@@ -124,6 +126,21 @@ class CLSArgumentParser
             CLSOption::get(CLSOption::DETAILS, '::'),
             CLSOption::CONFLICTS
         );
+    }
+
+    /**
+     * @return string
+     */
+    private function getShortOptions()
+    {
+        $result  = "";
+        $result .= CLSOption::HELP_SHORT;
+        $result .= CLSOption::get(CLSOption::INPUT_SHORT, '::');
+        $result .= CLSOption::get(CLSOption::OUTPUT_SHORT, '::');
+        $result .= CLSOption::get(CLSOption::PRETTY_XML_SHORT, ':');
+        $result .= CLSOption::get(CLSOption::DETAILS_SHORT, '::');
+        $result .= CLSOption::CONFLICTS_SHORT;
+        return $result;
     }
 
     /**
