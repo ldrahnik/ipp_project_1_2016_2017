@@ -85,7 +85,7 @@ class CLSParser
                     return Error::UNEXISTING_INPUT_FILE_OR_ERROR_WHEN_OPENING_INPUT_FILE;
                 }
             }
-            $contentToParse = fread($file, filesize($this->input));
+            $contentToParse = filesize($this->input) ? fread($file, filesize($this->input)) : "";
             fclose($file);
             return $this->parse($contentToParse);
         }
