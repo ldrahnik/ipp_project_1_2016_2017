@@ -12,6 +12,7 @@ namespace CLS\CPP;
  */
 
 use CLS\CPP\Error\Error;
+use CLS\CPP\Exception\InvalidType;
 use CLS\CPP\Exception\ScopeWithoutAnyVariableOrMethod;
 use CLS\CPP\Structure\Object\CPPClass;
 use CLS\CPP\Structure\Object\CPPClassAttribute;
@@ -21,7 +22,6 @@ use CLS\CPP\Structure\Object\CPPInheritance;
 use CLS\CPP\Structure\Object\Type\CPPClassAttribute as CPPClassAttributeType;
 use CLS\CPP\Structure\Object\Type\CPPClassKind;
 use CLS\CPP\Structure\Object\Type\CPPPrivacy;
-use CLS\CPP\Structure\Object\Type\CPPPScope;
 
 /**
  * Class CPPParser.
@@ -101,6 +101,8 @@ class CPPParser
             return 0;
         } catch (ScopeWithoutAnyVariableOrMethod $scopeWithoutAnyVariableOrMethod) {
             return ERROR::SCOPE_WITHOUT_ANY_VARIABLE;
+        } catch (InvalidType $invalidType) {
+            return ERROR::INVALID_INPUT_FORMAT;
         } catch (\Exception $exception) {
             return Error::STANDARD;
         }
@@ -170,6 +172,7 @@ class CPPParser
      * @param string $state
      *
      * @throws ScopeWithoutAnyVariableOrMethod
+     * @throws InvalidType
      *
      * @return int
      */
@@ -454,6 +457,8 @@ class CPPParser
                     if ($this->recursiveParser(CPPParserState::METHOD_ARGUMENTS_NEXT)) {
                         return 1;
                     }
+                } else {
+                    throw new InvalidType($this->type);
                 }
                 break;
             case CPPParserState::EQUAL_SIGN:
