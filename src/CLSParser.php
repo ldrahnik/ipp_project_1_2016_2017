@@ -144,7 +144,7 @@ class CLSParser
     private function generateClassTree($parsedClasses)
     {
         $xmlElements = array();
-        $xmlElements[] = $model = new XMLElement('model');
+        $xmlElements[] = $model = new XMLElement('model', array(), array(), true);
 
         foreach ($parsedClasses as $name => $class) {
             if (!$class->getInheritances()) {
