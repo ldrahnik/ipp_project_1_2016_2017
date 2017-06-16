@@ -44,30 +44,33 @@ class CLSArgumentParser
     {
         $longOptions = $this->getLongOptions();
         $options = getopt("", $longOptions);
+        $all = getopt("", array_merge(range('a', 'z'), range('A', 'Z'), range('0', '9')));
+        $wrong = array_diff(array_keys($all), array_keys($options));
 
-        // check duplicates
-        if($this->checkDuplicates($options) != 0) {
-            return 1;
+        // wrong parameters
+        if (!empty($wrong)) {
+            return 12;
         }
 
-        // display help
+        // duplicates
+        if($this->checkDuplicates($options) != 0) {
+            return 12;
+        }
+
+        // help
         if (array_key_exists(CLSOption::HELP, $options)) {
             return count($options) == 1 ? $this->displayHelp() : 1;
         }
 
-        foreach ($this->options as $name => $value) {
-            if (array_key_exists($name, $options)) {
-                if ($name == CLSOption::DETAILS) {
-                    $this->options[$name] = $options[$name] != false ? $options[$name] : false;
-                } else {
-                    if ($name == CLSOption::DETAILS) {
-                        $this->options[$name] = $options[$name] != false ? $options[$name] : false;
-                    } else {
-                        $this->options[$name] = $options[$name];
-                    }
-                }
+        // processing
+        foreach ($options as $name => $value) {
+            if (array_key_exists($name, $this->options)) {
+                $this->options[$name] = $options[$name];
+            } else {
+                return 12;
             }
         }
+
         return 0;
     }
 
