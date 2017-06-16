@@ -49,7 +49,7 @@ class CLSArgumentParser
         $all = getopt(implode(array_merge(range('a', 'z'), range('A', 'Z'), range('0', '9'))));
         $wrong = array_diff(array_keys($all), array_keys($options));
 
-        // wrong parameters
+        // wrong short parameters -[a|z],[A|Z],[0|9]
         if (!empty($wrong)) {
             return Error::BAD_FORMAT_OF_INPUT_ARGS_AND_OPTIONS;
         }
