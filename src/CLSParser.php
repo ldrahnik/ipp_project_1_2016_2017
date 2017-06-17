@@ -228,14 +228,16 @@ class CLSParser
                                 )
                             );
                         }
-                        $conflictMainElement->applyXmlElement(
-                            new XMLElement(
-                                'virtual',
-                                array(
-                                    'pure' => $conflict->isPureVirtual() ? 'yes' : 'no'
+                        if($conflict->isVirtual()) {
+                            $conflictMainElement->applyXmlElement(
+                                new XMLElement(
+                                    'virtual',
+                                    array(
+                                        'pure' => $conflict->isPureVirtual() ? 'yes' : 'no'
+                                    )
                                 )
-                            )
-                        );
+                            );
+                        }
                         $arguments = new XMLElement(
                             'arguments',
                             array(),
