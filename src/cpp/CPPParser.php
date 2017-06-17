@@ -12,6 +12,7 @@ namespace CLS\CPP;
  */
 
 use CLS\CPP\Error\Error;
+use CLS\CPP\Exception\DuplicatedPrivacy;
 use CLS\CPP\Exception\InvalidType;
 use CLS\CPP\Exception\ScopeWithoutAnyVariableOrMethod;
 use CLS\CPP\Structure\Object\CPPClass;
@@ -81,7 +82,7 @@ class CPPParser
         $this->class = null;
         $this->method = null;
         $this->privacy = null;
-        $this->usedPrivacies = [];
+        $this->usedPrivacies = array();
         $this->scope = null;
         $this->type = null;
         $this->typeWordCount = 0;
@@ -100,8 +101,10 @@ class CPPParser
             $this->recursiveParser();
             return 0;
         } catch (ScopeWithoutAnyVariableOrMethod $scopeWithoutAnyVariableOrMethod) {
-            return ERROR::SCOPE_WITHOUT_ANY_VARIABLE;
+            return ERROR::INVALID_INPUT_FORMAT;
         } catch (InvalidType $invalidType) {
+            return ERROR::INVALID_INPUT_FORMAT;
+        } catch (DuplicatedPrivacy $duplicatedPrivacy) {
             return ERROR::INVALID_INPUT_FORMAT;
         } catch (\Exception $exception) {
             return Error::STANDARD;
@@ -173,6 +176,7 @@ class CPPParser
      *
      * @throws ScopeWithoutAnyVariableOrMethod
      * @throws InvalidType
+     * @throws DuplicatedPrivacy
      *
      * @return int
      */
@@ -308,8 +312,8 @@ class CPPParser
                         if ($this->recursiveParser(CPPParserState::COLON)) {
                             return 1;
                         }
-                        if (array_key_exists($token, $this->usedPrivacies)) {
-                            return 1;
+                        if (array_key_exists($token, array_flip($this->usedPrivacies))) {
+                           throw new DuplicatedPrivacy($token);
                         }
 
                         $this->privacy = $token;
