@@ -15,6 +15,7 @@ use CLS\CPP\Error\Error;
 use CLS\CPP\Exception\DuplicatedPrivacy;
 use CLS\CPP\Exception\InvalidType;
 use CLS\CPP\Exception\ScopeWithoutAnyVariableOrMethod;
+use CLS\CPP\Exception\UnknownInheritanceClassName;
 use CLS\CPP\Structure\Object\CPPClass;
 use CLS\CPP\Structure\Object\CPPClassAttribute;
 use CLS\CPP\Structure\Object\CPPClassMethod;
@@ -106,6 +107,8 @@ class CPPParser
             return ERROR::INVALID_INPUT_FORMAT;
         } catch (DuplicatedPrivacy $duplicatedPrivacy) {
             return ERROR::INVALID_INPUT_FORMAT;
+        } catch (UnknownInheritanceClassName $unknownInheritanceClassName) {
+            return ERROR::INVALID_INPUT_FORMAT;
         } catch (\Exception $exception) {
             return Error::STANDARD;
         }
@@ -177,6 +180,7 @@ class CPPParser
      * @throws ScopeWithoutAnyVariableOrMethod
      * @throws InvalidType
      * @throws DuplicatedPrivacy
+     * @throws UnknownInheritanceClassName
      *
      * @return int
      */
@@ -252,11 +256,14 @@ class CPPParser
                 $this->privacyWithAtleastOneVariableOrMethod = false;
                 break;
             case CPPParserState::CLASS_INHERITANCE_NAME:
-                $token = $this->getToken();
-                if (!$token) {
+                $className = $this->getToken();
+                if (!$className) {
                     return 1;
                 }
-                $this->class->addInheritance(new CPPInheritance($token, $this->privacy));
+                if (!isset($this->parsedClasses[$className])) {
+                    throw new UnknownInheritanceClassName();
+                }
+                $this->class->addInheritance(new CPPInheritance($className, $this->privacy));
                 $this->privacy = null;
                 break;
             case CPPParserState::CLASS_BODY_DEFINITION:
