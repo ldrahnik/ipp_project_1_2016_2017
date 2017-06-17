@@ -86,10 +86,10 @@ class CPPPrivacy
      *
      * type:                         private          protected      public
      *                          -----------------   ------------   -----------
-     * private                  is not accessable |   private    |   private
-     * protected                is not accessable |   protected  |   protected
-     * public                   is not accessable |   protected  |   public
-     *
+     * private                  is not accessible |   private    |   private
+     * protected                is not accessible |   protected  |   protected
+     * public                   is not accessible |   protected  |   public
+
      *
      *
      * @param string $type
