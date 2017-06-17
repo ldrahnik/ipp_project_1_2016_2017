@@ -103,15 +103,15 @@ class CPPParser
             $this->recursiveParser();
             return 0;
         } catch (ScopeWithoutAnyVariableOrMethod $scopeWithoutAnyVariableOrMethod) {
-            return ERROR::INVALID_INPUT_FORMAT;
+            return Error::INVALID_INPUT_FORMAT;
         } catch (InvalidType $invalidType) {
-            return ERROR::INVALID_INPUT_FORMAT;
+            return Error::INVALID_INPUT_FORMAT;
         } catch (DuplicatedPrivacy $duplicatedPrivacy) {
-            return ERROR::INVALID_INPUT_FORMAT;
+            return Error::INVALID_INPUT_FORMAT;
         } catch (UnknownInheritanceClassName $unknownInheritanceClassName) {
-            return ERROR::INVALID_INPUT_FORMAT;
+            return Error::INVALID_INPUT_FORMAT;
         } catch (UnknownTypeClassName $unknownTypeClassName) {
-            return ERROR::INVALID_INPUT_FORMAT;
+            return Error::INVALID_INPUT_FORMAT;
         } catch (\Exception $exception) {
             return Error::STANDARD;
         }
