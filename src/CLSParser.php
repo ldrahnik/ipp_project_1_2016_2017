@@ -218,16 +218,6 @@ class CLSParser
                                 'scope' => $conflict->getScope()
                             )
                         );
-                        if ($conflict->getFromInheritanceClassName() != $class->getName()) {
-                            $conflictMainElement->applyXmlElement(
-                                new XMLElement(
-                                    'from',
-                                    array(
-                                        'name' => $conflict->getFromInheritanceClassName()
-                                    )
-                                )
-                            );
-                        }
                         if($conflict->isVirtual()) {
                             $conflictMainElement->applyXmlElement(
                                 new XMLElement(
