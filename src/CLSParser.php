@@ -334,14 +334,16 @@ class CLSParser
                             )
                         );
                     }
-                    $methodElement->applyXmlElement(
-                        new XMLElement(
-                            'virtual',
-                            array(
-                                'pure' => $method->isPureVirtual() ? 'yes' : 'no'
+                    if($method->isVirtual()) {
+                        $methodElement->applyXmlElement(
+                            new XMLElement(
+                                'virtual',
+                                array(
+                                    'pure' => $method->isPureVirtual() ? 'yes' : 'no'
+                                )
                             )
-                        )
-                    );
+                        );
+                    }
                     $arguments = new XMLElement(
                         'arguments',
                         array(),
