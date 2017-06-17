@@ -16,7 +16,7 @@ use CLS\CLSParser;
 
 require(__DIR__ . "/vendor/autoload.php");
 
-$clsArgumentParser = new CLSArgumentParser();
+$clsArgumentParser = new CLSArgumentParser($argv);
 $result = $clsArgumentParser->run();
 
 if($result != 0) {
