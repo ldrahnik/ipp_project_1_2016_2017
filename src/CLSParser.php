@@ -196,7 +196,10 @@ class CLSParser
             $conflictsElement = new XMLElement('conflicts', array(), array(), true);
 
             $conflictSourcesElements = array();
+            $conflictName = null;
             foreach ($class->getConflicts() as $conflict) {
+                $conflictMainElement = null;
+                $conflictName = $conflict->getName();
                 if ($conflict instanceof CPPClassAttribute) {
                     $conflictMainElement = new XMLElement(
                         'attribute',
@@ -267,16 +270,16 @@ class CLSParser
                     )
                 );
             }
-
-            $conflictElement = new XMLElement(
+            $conflictsMainElement = new XMLElement(
                 'member',
                 array(
-                    'name' => $conflict->getName()
+                    'name' => $conflictName
                 ),
                 $conflictSourcesElements
             );
 
-            $conflictsElement->applyXmlElement($conflictElement);
+            $conflictsElement->applyXmlElement($conflictsMainElement);
+
 
             if ($class->getConflicts()) {
                 $classElement->applyXmlElement($conflictsElement);
@@ -287,7 +290,8 @@ class CLSParser
             $privacyElement = new XMLElement($privacy);
 
             $attributesElements = new XMLElement('attributes');
-            foreach ($class->getAttributes() as $attribute) {
+            foreach ($class->getAttributesWithNoConflicts() as $attribute) {
+
                 if ($attribute->getPrivacy() == $privacy) {
                     $attributeElement = new XMLElement(
                         'attribute',
@@ -314,7 +318,7 @@ class CLSParser
             }
 
             $methodsElement = new XMLElement('methods');
-            foreach ($class->getMethods() as $method) {
+            foreach ($class->getMethodsWithNoConflicts() as $method) {
                 if ($method->getPrivacy() == $privacy) {
                     $methodElement = new XMLElement(
                         'method',

@@ -556,10 +556,10 @@ class CPPParser
                                 $this->class->addMethod($method);
                             } else {
                                 if ($this->conflicts) {
-                                    $this->class->addConflict($this->class->methodExist($inheritanceMethod->getName()));
+                                    $this->class->addConflict($this->class->methodExist($inheritanceMethod));
                                     $this->class->addConflict($inheritanceMethod);
 
-                                    $this->class->removeMethod($inheritanceMethod->getName());
+                                    $this->class->removeMethod($inheritanceMethod);
                                 }
                             }
                         } else {

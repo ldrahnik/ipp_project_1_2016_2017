@@ -95,11 +95,11 @@ class CPPClassMethod implements CPPClassElement
     /**
      * @param int $index
      *
-     * @return CPPClassMethodArgument
+     * @return CPPClassMethodArgument|null
      */
     public function getArgument($index)
     {
-        return $this->arguments[$index];
+        return array_key_exists($index, $this->arguments) ? $this->arguments[$index] : null;
     }
 
     /**

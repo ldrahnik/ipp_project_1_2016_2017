@@ -97,7 +97,7 @@ class CPPClass
             }
             $argumentsAreTheSame = true;
             foreach ($m->getArguments() as $key => $arg) {
-                if ($arg->getType() != $method->getArgument($key)->getType()) {
+                if ($method->getArgument($key) && $arg->getType() != $method->getArgument($key)->getType()) {
                     $argumentsAreTheSame = false;
                 }
             }
@@ -311,7 +311,7 @@ class CPPClass
                 }
                 $argumentsAreTheSame = true;
                 foreach ($c->getArguments() as $key => $arg) {
-                    if ($arg->getType() != $conflict->getArgument($key)->getType()) {
+                    if ($conflict->getArgument($key) && $arg->getType() != $conflict->getArgument($key)->getType()) {
                         continue;
                     }
                 }
@@ -334,4 +334,33 @@ class CPPClass
     {
         return $this->conflicts;
     }
+
+    /**
+     * @return array
+     */
+    public function getAttributesWithNoConflicts()
+    {
+        $result = array();
+        foreach($this->getAttributes() as $attribute) {
+            if(!$this->existConflict($attribute)) {
+                $result[$attribute->getName()] = $attribute;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMethodsWithNoConflicts()
+    {
+        $result = array();
+        foreach($this->getMethods() as $method) {
+            if(!$this->existConflict($method)) {
+                $result[$method->getName()] = $method;
+            }
+        }
+        return $result;
+    }
+
 }
