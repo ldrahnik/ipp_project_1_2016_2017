@@ -336,7 +336,7 @@ class CPPClass
     }
 
     /**
-     * @return array
+     * @return CPPClassAttribute[]
      */
     public function getAttributesWithNoConflicts()
     {
@@ -350,7 +350,7 @@ class CPPClass
     }
 
     /**
-     * @return array
+     * @return CPPClassMethod[]
      */
     public function getMethodsWithNoConflicts()
     {
