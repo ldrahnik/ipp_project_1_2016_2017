@@ -184,6 +184,7 @@ class CPPParser
      * @throws InvalidType
      * @throws DuplicatedPrivacy
      * @throws UnknownInheritanceClassName
+     * @throws UnknownTypeClassName
      *
      * @return int
      */
@@ -701,7 +702,7 @@ class CPPParser
                         if ($this->recursiveParser(CPPParserState::RIGHT_CURLY_BRACKET)) {
                             return 0;
                         }
-                        return 1;
+                        throw new UnknownTypeClassName($this->getLatestToken());
                     }
                     if ($this->recursiveParser(CPPParserState::NAME)) {
                         return 1;
@@ -730,7 +731,7 @@ class CPPParser
                     } else {
                         $this->lastTokenWasNotUsed();
                         if ($this->recursiveParser(CPPParserState::ALREADY_DEFINED_CLASS_NAME)) {
-                            throw new UnknownTypeClassName($type);
+                            return 1;
                         } else {
                             $this->type = $type;
                         }
