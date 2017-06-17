@@ -675,7 +675,7 @@ class CPPParser
             case CPPParserState::CONSTRUCTOR_DECONSTRUCTOR_TYPE:
                 $token = $this->getToken();
                 if ($token == $this->class->getName()) {
-                    $this->type = $this->class->getName();
+                    $this->type = CPPClassAttributeType::VOID;
                 } else {
                     if ($token == (CPPParserState::TILDE . $this->class->getName())) {
                         $this->type = CPPPrivacy::VOID;
@@ -695,9 +695,9 @@ class CPPParser
                         }
                         return 1;
                     }
-                }
-                if ($this->recursiveParser(CPPParserState::NAME)) {
-                    return 1;
+                    if ($this->recursiveParser(CPPParserState::NAME)) {
+                        return 1;
+                    }
                 }
                 if ($this->recursiveParser(CPPParserState::SOMETHING_TAIL)) {
                     return 1;
