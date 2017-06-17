@@ -64,7 +64,7 @@ class CLSArgumentParser
         $options = getopt($shortOptions, $longOptions);
 
         // wrong options, parameters
-        if(count($this->argv) != $options) {
+        if(count($this->argv) != count($options)) {
             return Error::BAD_FORMAT_OF_INPUT_ARGS_AND_OPTIONS;
         }
 
