@@ -16,6 +16,7 @@ use CLS\CPP\Exception\DuplicatedPrivacy;
 use CLS\CPP\Exception\InvalidType;
 use CLS\CPP\Exception\ScopeWithoutAnyVariableOrMethod;
 use CLS\CPP\Exception\UnknownInheritanceClassName;
+use CLS\CPP\Exception\UnknownTypeClassName;
 use CLS\CPP\Structure\Object\CPPClass;
 use CLS\CPP\Structure\Object\CPPClassAttribute;
 use CLS\CPP\Structure\Object\CPPClassMethod;
@@ -108,6 +109,8 @@ class CPPParser
         } catch (DuplicatedPrivacy $duplicatedPrivacy) {
             return ERROR::INVALID_INPUT_FORMAT;
         } catch (UnknownInheritanceClassName $unknownInheritanceClassName) {
+            return ERROR::INVALID_INPUT_FORMAT;
+        } catch (UnknownTypeClassName $unknownTypeClassName) {
             return ERROR::INVALID_INPUT_FORMAT;
         } catch (\Exception $exception) {
             return Error::STANDARD;
@@ -727,7 +730,7 @@ class CPPParser
                     } else {
                         $this->lastTokenWasNotUsed();
                         if ($this->recursiveParser(CPPParserState::ALREADY_DEFINED_CLASS_NAME)) {
-                            return 1;
+                            throw new UnknownTypeClassName($type);
                         } else {
                             $this->type = $type;
                         }
