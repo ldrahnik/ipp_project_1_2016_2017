@@ -644,12 +644,6 @@ class CPPParser
                             if ($this->recursiveParser(CPPParserState::METHOD_ARGUMENTS)) {
                                 return 1;
                             }
-                            /*if ($this->recursiveParser(CPPParserState::SEMICOLON)) {
-                                return 1;
-                            }*/
-                            /*if ($this->recursiveParser(CPPParserState::RIGHT_CURLY_BRACKET)) {
-                                return 1;
-                            }*/
                             if (!$this->recursiveParser(CPPParserState::LEFT_CURLY_BRACKET)) {
                                 if ($this->recursiveParser(CPPParserState::RIGHT_CURLY_BRACKET)) {
                                     return 1;
