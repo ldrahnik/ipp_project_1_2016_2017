@@ -11,6 +11,8 @@
 
 namespace CLS;
 
+use CLS\CPP\Error\Error;
+
 /**
  * Class CLSArgumentParser.
  */
@@ -35,6 +37,21 @@ class CLSArgumentParser
         CLSOption::CONFLICTS => null
     );
 
+    /** @var array */
+    private $argv;
+
+    /**
+     * CLSArgumentParser constructor.
+     *
+     * @param array $argv
+     */
+    public function __construct(array $argv)
+    {
+        unset($argv[0]);
+        $this->argv = $argv;
+    }
+
+
     /**
      * Start function where are options parsed.
      *
@@ -43,31 +60,33 @@ class CLSArgumentParser
     public function run()
     {
         $longOptions = $this->getLongOptions();
-        $options = getopt("", $longOptions);
+        $shortOptions = $this->getShortOptions();
+        $options = getopt($shortOptions, $longOptions);
 
-        // check duplicates
+        // wrong options, parameters
+        if(count($this->argv) != $options) {
+            return Error::BAD_FORMAT_OF_INPUT_ARGS_AND_OPTIONS;
+        }
+
+        // duplicates
         if($this->checkDuplicates($options) != 0) {
-            return 1;
+            return Error::BAD_FORMAT_OF_INPUT_ARGS_AND_OPTIONS;
         }
 
-        // display help
-        if (array_key_exists(CLSOption::HELP, $options)) {
-            return count($options) == 1 ? $this->displayHelp() : 1;
+        // help
+        if (array_key_exists(CLSOption::HELP, $options) || array_key_exists(CLSOption::HELP_SHORT, $options)) {
+            return count($options) == 1 ? $this->displayHelp() : Error::BAD_FORMAT_OF_INPUT_ARGS_AND_OPTIONS;
         }
 
-        foreach ($this->options as $name => $value) {
-            if (array_key_exists($name, $options)) {
-                if ($name == CLSOption::DETAILS) {
-                    $this->options[$name] = $options[$name] != false ? $options[$name] : false;
-                } else {
-                    if ($name == CLSOption::DETAILS) {
-                        $this->options[$name] = $options[$name] != false ? $options[$name] : false;
-                    } else {
-                        $this->options[$name] = $options[$name];
-                    }
-                }
+        // processing
+        foreach ($options as $name => $value) {
+            if (array_key_exists($name, $this->options)) {
+                $this->options[$name] = $options[$name];
+            } else {
+                return Error::BAD_FORMAT_OF_INPUT_ARGS_AND_OPTIONS;
             }
         }
+
         return 0;
     }
 
@@ -124,10 +143,47 @@ class CLSArgumentParser
     }
 
     /**
+     * @return string
+     */
+    private function getShortOptions()
+    {
+        $result  = "";
+        $result .= CLSOption::HELP_SHORT;
+        $result .= CLSOption::get(CLSOption::INPUT_SHORT, '::');
+        $result .= CLSOption::get(CLSOption::OUTPUT_SHORT, '::');
+        $result .= CLSOption::get(CLSOption::PRETTY_XML_SHORT, ':');
+        $result .= CLSOption::get(CLSOption::DETAILS_SHORT, '::');
+        $result .= CLSOption::CONFLICTS_SHORT;
+        return $result;
+    }
+
+    /**
      * @param $options
+     *
      * @return int
      */
     private function checkDuplicates($options) {
+        // check together
+        if(array_key_exists(CLSOption::HELP, $options) && array_key_exists(CLSOption::HELP_SHORT, $options)) {
+            return 1;
+        }
+        if(array_key_exists(CLSOption::INPUT, $options) && array_key_exists(CLSOption::INPUT_SHORT, $options)) {
+            return 1;
+        }
+        if(array_key_exists(CLSOption::OUTPUT, $options) && array_key_exists(CLSOption::OUTPUT_SHORT, $options)) {
+            return 1;
+        }
+        if(array_key_exists(CLSOption::DETAILS, $options) && array_key_exists(CLSOption::DETAILS_SHORT, $options)) {
+            return 1;
+        }
+        if(array_key_exists(CLSOption::PRETTY_XML, $options) && array_key_exists(CLSOption::PRETTY_XML_SHORT, $options)) {
+            return 1;
+        }
+        if(array_key_exists(CLSOption::CONFLICTS, $options) && array_key_exists(CLSOption::CONFLICTS_SHORT, $options)) {
+            return 1;
+        }
+
+        // check separately
         foreach ($options as $name => $value) {
             if (is_array($value)) {
                 return 1;
