@@ -130,4 +130,20 @@ class CPPClassAttribute implements CPPClassElement
         return $this->using;
     }
 
+    /**
+     * @param bool $using
+     */
+    public function setUsing($using)
+    {
+        $this->using = $using;
+    }
+
+    /**
+     * @param string $scope
+     */
+    public function setScope($scope)
+    {
+        $this->scope = $scope;
+    }
+
 }

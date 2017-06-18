@@ -354,6 +354,7 @@ class CPPParser
                                 return 1;
                             }
                         } else {
+                            // TODO: add support using::method
                             if (CPPPrivacy::isUsing($token)) {
                                 $this->privacyWithAtleastOneVariableOrMethod = true;
                                 if ($this->recursiveParser(CPPParserState::ALREADY_DEFINED_CLASS_NAME)) {
@@ -377,15 +378,11 @@ class CPPParser
                                     return 1;
                                 }
 
-                                $type = $inheritanceAttribute->getType();
-                                $attribute = new CPPClassAttribute(
-                                    $attributeName,
-                                    $type,
-                                    $this->privacy ? CPPPrivacy::STATIC_TYPE : null,
-                                    $this->privacy,
-                                    $className,
-                                    true
-                                );
+                                $attribute = clone $inheritanceAttribute;
+                                $attribute->setUsing(true);
+                                $attribute->setPrivacy($this->privacy);
+                                $attribute->setScope($this->privacy ? CPPPrivacy::STATIC_TYPE : null);
+
                                 $this->class->addAttribute($attribute);
 
                                 if ($this->recursiveParser(CPPParserState::SEMICOLON)) {
