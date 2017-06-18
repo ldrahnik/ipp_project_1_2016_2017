@@ -103,15 +103,15 @@ class CPPParser
             $this->recursiveParser();
             return 0;
         } catch (ScopeWithoutAnyVariableOrMethod $scopeWithoutAnyVariableOrMethod) {
-            return ERROR::INVALID_INPUT_FORMAT;
+            return Error::INVALID_INPUT_FORMAT;
         } catch (InvalidType $invalidType) {
-            return ERROR::INVALID_INPUT_FORMAT;
+            return Error::INVALID_INPUT_FORMAT;
         } catch (DuplicatedPrivacy $duplicatedPrivacy) {
-            return ERROR::INVALID_INPUT_FORMAT;
+            return Error::INVALID_INPUT_FORMAT;
         } catch (UnknownInheritanceClassName $unknownInheritanceClassName) {
-            return ERROR::INVALID_INPUT_FORMAT;
+            return Error::INVALID_INPUT_FORMAT;
         } catch (UnknownTypeClassName $unknownTypeClassName) {
-            return ERROR::INVALID_INPUT_FORMAT;
+            return Error::INVALID_INPUT_FORMAT;
         } catch (\Exception $exception) {
             return Error::STANDARD;
         }
@@ -184,6 +184,7 @@ class CPPParser
      * @throws InvalidType
      * @throws DuplicatedPrivacy
      * @throws UnknownInheritanceClassName
+     * @throws UnknownTypeClassName
      *
      * @return int
      */
@@ -525,17 +526,25 @@ class CPPParser
                                     ));
                                 $this->class->addAttribute($attribute);
                             } else {
-                                if ($this->conflicts) {
-                                    $this->class->addConflict($this->class->attributeExist($inheritanceAttribute->getName()));
-                                    $this->class->addConflict($inheritanceAttribute);
+                                $this->class->addHiddenAttribute($inheritanceAttribute);
 
-                                    $this->class->removeAttribute($inheritanceAttribute->getName());
+                                if ($this->conflicts) {
+                                    $conflictElement = $this->class->attributeExist($inheritanceAttribute->getName());
+                                    if($conflictElement) {
+                                        $this->class->addConflict($conflictElement);
+                                        $this->class->addConflict($inheritanceAttribute);
+
+                                        $this->class->removeAttribute($inheritanceAttribute->getName());
+                                    }
                                 }
                             }
                         } else {
+                            $this->class->addHiddenAttribute($inheritanceAttribute);
+
                             if ($this->conflicts) {
-                                if ($this->class->attributeExist($inheritanceAttribute->getName())) {
-                                    $this->class->addConflict($this->class->attributeExist($inheritanceAttribute->getName()));
+                                $conflictElement = $this->class->attributeForConflictExist($inheritanceAttribute->getName());
+                                if ($conflictElement) {
+                                    $this->class->addConflict($conflictElement);
                                     $this->class->addConflict($inheritanceAttribute);
 
                                     $this->class->removeAttribute($inheritanceAttribute->getName());
@@ -543,12 +552,24 @@ class CPPParser
                             }
                         }
                     }
+                    foreach ($this->parsedClasses[$inheritance->getName()]->getAttributes() as $inheritanceHiddenAttribute) {
+                        $this->class->addHiddenAttribute($inheritanceHiddenAttribute);
+
+                        if ($this->conflicts) {
+                            $conflictElement = $this->class->attributeForConflictExist($inheritanceHiddenAttribute->getName());
+                            if ($conflictElement) {
+                                $this->class->addConflict($conflictElement);
+                                $this->class->addConflict($inheritanceHiddenAttribute);
+
+                                $this->class->removeAttribute($inheritanceHiddenAttribute->getName());
+                            }
+                        }
+                    }
                     foreach ($this->parsedClasses[$inheritance->getName()]->getMethods() as $inheritanceMethod) {
                         if (CPPPrivacy::isAllowedToInheritance(
                             $inheritanceMethod->getPrivacy(),
                             $inheritance->getPrivacy()
-                        )
-                        ) {
+                        )) {
                             $methodExist = $this->class->methodExist($inheritanceMethod);
                             if (!$methodExist) {
                                 $method = clone $inheritanceMethod;
@@ -558,21 +579,42 @@ class CPPParser
                                 ));
                                 $this->class->addMethod($method);
                             } else {
+                                $this->class->addHiddenMethod($inheritanceMethod);
+
                                 if ($this->conflicts) {
-                                    $this->class->addConflict($this->class->methodExist($inheritanceMethod));
+                                    $conflictElement = $this->class->methodForConflictExist($inheritanceMethod);
+                                    if($conflictElement) {
+                                        $this->class->addConflict($conflictElement);
+                                        $this->class->addConflict($inheritanceMethod);
+
+                                        $this->class->removeMethod($inheritanceMethod);
+                                    }
+                                }
+                            }
+                        } else {
+                            $this->class->addHiddenMethod($inheritanceMethod);
+
+                            if ($this->conflicts) {
+                                $conflictElement = $this->class->methodForConflictExist($inheritanceMethod);
+                                if ($conflictElement) {
+                                    $this->class->addConflict($conflictElement);
                                     $this->class->addConflict($inheritanceMethod);
 
                                     $this->class->removeMethod($inheritanceMethod);
                                 }
                             }
-                        } else {
-                            if ($this->conflicts) {
-                                if ($this->class->attributeExist($inheritanceMethod->getName())) {
-                                    $this->class->addConflict($this->class->attributeExist($inheritanceMethod->getName()));
-                                    $this->class->addConflict($inheritanceMethod);
+                        }
+                    }
+                    foreach($this->parsedClasses[$inheritance->getName()]->getHiddenMethods() as $inheritanceHiddenMethod) {
+                        $this->class->addHiddenMethod($inheritanceHiddenMethod);
 
-                                    $this->class->removeAttribute($inheritanceMethod->getName());
-                                }
+                        if ($this->conflicts) {
+                            $conflictElement = $this->class->methodForConflictExist($inheritanceHiddenMethod);
+                            if($conflictElement) {
+                                $this->class->addConflict($conflictElement);
+                                $this->class->addConflict($inheritanceHiddenMethod);
+
+                                $this->class->removeMethod($inheritanceHiddenMethod);
                             }
                         }
                     }
@@ -701,7 +743,7 @@ class CPPParser
                         if ($this->recursiveParser(CPPParserState::RIGHT_CURLY_BRACKET)) {
                             return 0;
                         }
-                        return 1;
+                        throw new UnknownTypeClassName($this->getLatestToken());
                     }
                     if ($this->recursiveParser(CPPParserState::NAME)) {
                         return 1;
@@ -730,7 +772,7 @@ class CPPParser
                     } else {
                         $this->lastTokenWasNotUsed();
                         if ($this->recursiveParser(CPPParserState::ALREADY_DEFINED_CLASS_NAME)) {
-                            throw new UnknownTypeClassName($type);
+                            return 1;
                         } else {
                             $this->type = $type;
                         }

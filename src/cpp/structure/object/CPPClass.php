@@ -31,8 +31,14 @@ class CPPClass
     /** @var []CPPClassAttribute */
     private $attributes;
 
+    /** @var []CPPClassAttribute */
+    private $hiddenAttributes = array();
+
     /** @var []CPPClassMethod */
     private $methods;
+
+    /** @var []CPPClassMethod */
+    private $hiddenMethods = array();
 
     /** @var []CPPClassElement */
     private $conflicts;
@@ -75,6 +81,30 @@ class CPPClass
         }
 
         foreach ($this->getMethods() as $key => $method) {
+            if($this->isMethodTheSame($m, $method)) {
+                return $method;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param CPPClassMethod $m
+     *
+     * @return bool|CPPClassMethod
+     */
+    public function methodForConflictExist(CPPClassMethod $m)
+    {
+        if (!array_key_exists($m->getName(), $this->methods) && !array_key_exists($m->getName(), $this->hiddenMethods)) {
+            return false;
+        }
+
+        foreach ($this->getMethods() as $key => $method) {
+            if($this->isMethodTheSame($m, $method)) {
+                return $method;
+            }
+        }
+        foreach ($this->getHiddenMethods() as $key => $method) {
             if($this->isMethodTheSame($m, $method)) {
                 return $method;
             }
@@ -192,6 +222,26 @@ class CPPClass
     }
 
     /**
+     * @param string $name
+     *
+     * @return bool|CPPClassAttribute
+     */
+    public function attributeForConflictExist($name)
+    {
+        foreach($this->getAttributes() as $attribute) {
+            if($attribute->getName() == $name) {
+                return $attribute;
+            }
+        }
+        foreach($this->getHiddenAttributes() as $attribute) {
+            if($attribute->getName() == $name) {
+                return $attribute;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @return bool
      */
     public function isVirtual()
@@ -221,11 +271,27 @@ class CPPClass
     }
 
     /**
+     * @param CPPClassAttribute $attribute
+     */
+    public function addHiddenAttribute(CPPClassAttribute $attribute)
+    {
+        $this->hiddenAttributes[] = $attribute;
+    }
+
+    /**
      * @param CPPClassMethod $method
      */
     public function addMethod(CPPClassMethod $method)
     {
         $this->methods[$method->getName()] = $method;
+    }
+
+    /**
+     * @param CPPClassMethod $method
+     */
+    public function addHiddenMethod(CPPClassMethod $method)
+    {
+        $this->hiddenMethods[$method->getName()] = $method;
     }
 
     /**
@@ -237,11 +303,27 @@ class CPPClass
     }
 
     /**
+     * @return CPPClassMethod[]
+     */
+    public function getHiddenMethods()
+    {
+        return $this->hiddenMethods;
+    }
+
+    /**
      * @return CPPClassAttribute[]
      */
     public function getAttributes()
     {
         return $this->attributes;
+    }
+
+    /**
+     * @return CPPClassAttribute[]
+     */
+    public function getHiddenAttributes()
+    {
+        return $this->hiddenAttributes;
     }
 
     /**
