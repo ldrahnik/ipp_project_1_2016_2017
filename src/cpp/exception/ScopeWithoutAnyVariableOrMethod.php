@@ -11,11 +11,9 @@
 
 namespace CLS\CPP\Exception;
 
-use Exception;
-
 /**
  * Class ScopeWithoutAnyVariableOrMethod
  */
-class ScopeWithoutAnyVariableOrMethod extends Exception {
+class ScopeWithoutAnyVariableOrMethod extends InvalidInputFormat {
 
 }

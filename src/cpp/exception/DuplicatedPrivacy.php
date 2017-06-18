@@ -11,11 +11,9 @@
 
 namespace CLS\CPP\Exception;
 
-use Exception;
-
 /**
  * Class DuplicatedPrivacy
  */
-class DuplicatedPrivacy extends Exception {
+class DuplicatedPrivacy extends InvalidInputFormat {
 
 }

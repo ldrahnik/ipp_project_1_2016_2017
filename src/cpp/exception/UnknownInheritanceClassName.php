@@ -11,11 +11,9 @@
 
 namespace CLS\CPP\Exception;
 
-use Exception;
-
 /**
  * Class UnknownInheritanceClassName
  */
-class UnknownInheritanceClassName extends Exception {
+class UnknownInheritanceClassName extends InvalidInputFormat {
 
 }

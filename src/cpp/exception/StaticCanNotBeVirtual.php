@@ -12,8 +12,8 @@
 namespace CLS\CPP\Exception;
 
 /**
- * Class InvalidType
+ * Class StaticCanNotBeVirtual
  */
-class InvalidType extends InvalidInputFormat {
+class StaticCanNotBeVirtual extends InvalidInputFormat {
 
 }

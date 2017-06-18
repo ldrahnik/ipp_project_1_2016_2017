@@ -13,8 +13,10 @@ namespace CLS\CPP;
 
 use CLS\CPP\Error\Error;
 use CLS\CPP\Exception\DuplicatedPrivacy;
+use CLS\CPP\Exception\InvalidInputFormat;
 use CLS\CPP\Exception\InvalidType;
 use CLS\CPP\Exception\ScopeWithoutAnyVariableOrMethod;
+use CLS\CPP\Exception\StaticCanNotBeVirtual;
 use CLS\CPP\Exception\UnknownInheritanceClassName;
 use CLS\CPP\Exception\UnknownTypeClassName;
 use CLS\CPP\Structure\Object\CPPClass;
@@ -100,7 +102,11 @@ class CPPParser
     public function parse()
     {
         try {
-            $this->recursiveParser();
+            $returnValue = $this->recursiveParser();
+
+            if($returnValue != 0) {
+                return $returnValue;
+            }
             return 0;
         } catch (ScopeWithoutAnyVariableOrMethod $scopeWithoutAnyVariableOrMethod) {
             return Error::INVALID_INPUT_FORMAT;
@@ -111,6 +117,10 @@ class CPPParser
         } catch (UnknownInheritanceClassName $unknownInheritanceClassName) {
             return Error::INVALID_INPUT_FORMAT;
         } catch (UnknownTypeClassName $unknownTypeClassName) {
+            return Error::INVALID_INPUT_FORMAT;
+        } catch (StaticCanNotBeVirtual $staticCanNotBeVirtual) {
+            return Error::INVALID_INPUT_FORMAT;
+        } catch (InvalidInputFormat $invalidInputFormat) {
             return Error::INVALID_INPUT_FORMAT;
         } catch (\Exception $exception) {
             return Error::STANDARD;
@@ -185,6 +195,8 @@ class CPPParser
      * @throws DuplicatedPrivacy
      * @throws UnknownInheritanceClassName
      * @throws UnknownTypeClassName
+     * @throws StaticCanNotBeVirtual
+     * @throws InvalidInputFormat
      *
      * @return int
      */
@@ -312,9 +324,6 @@ class CPPParser
                 }
 
                 if (CPPPrivacy::isStatic($token)) {
-                    if($this->method && $this->method->isVirtual()) {
-                        return 1;
-                    }
                     $this->scope = CPPPrivacy::STATIC_TYPE;
                     if ($this->recursiveParser(CPPParserState::CLASS_STATEMENT)) {
                         return 1;
@@ -400,7 +409,7 @@ class CPPParser
                 break;
             case CPPParserState::METHOD:
                 if ($this->recursiveParser(CPPParserState::TYPE)) {
-                    return 1;
+                    throw new InvalidInputFormat();
                 }
                 $this->method->setType($this->getLatestToken());
 
@@ -694,6 +703,11 @@ class CPPParser
                                     return 1;
                                 }
                             }
+                            if ($this->recursiveParser(CPPParserState::SEMICOLON)) {
+                                $this->lastTokenWasNotUsed();
+                            } else {
+                                return 0;
+                            }
                         }
                     }
                 break;
@@ -740,6 +754,9 @@ class CPPParser
                     $this->lastTokenWasNotUsed();
                     if ($this->recursiveParser(CPPParserState::TYPE)) {
                         $this->lastTokenWasNotUsed();
+                        if (CPPPrivacy::isVirtual($this->getToken()) && $this->scope == CPPPrivacy::STATIC_TYPE) {
+                            throw new StaticCanNotBeVirtual();
+                        }
                         if ($this->recursiveParser(CPPParserState::RIGHT_CURLY_BRACKET)) {
                             return 0;
                         }

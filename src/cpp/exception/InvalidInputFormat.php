@@ -11,9 +11,11 @@
 
 namespace CLS\CPP\Exception;
 
+use Exception;
+
 /**
- * Class InvalidType
+ * Class InvalidInputFormat
  */
-class InvalidType extends InvalidInputFormat {
+class InvalidInputFormat extends Exception {
 
 }
