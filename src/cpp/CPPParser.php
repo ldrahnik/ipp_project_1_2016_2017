@@ -526,17 +526,25 @@ class CPPParser
                                     ));
                                 $this->class->addAttribute($attribute);
                             } else {
-                                if ($this->conflicts) {
-                                    $this->class->addConflict($this->class->attributeExist($inheritanceAttribute->getName()));
-                                    $this->class->addConflict($inheritanceAttribute);
+                                $this->class->addHiddenAttribute($inheritanceAttribute);
 
-                                    $this->class->removeAttribute($inheritanceAttribute->getName());
+                                if ($this->conflicts) {
+                                    $conflictElement = $this->class->attributeExist($inheritanceAttribute->getName());
+                                    if($conflictElement) {
+                                        $this->class->addConflict($conflictElement);
+                                        $this->class->addConflict($inheritanceAttribute);
+
+                                        $this->class->removeAttribute($inheritanceAttribute->getName());
+                                    }
                                 }
                             }
                         } else {
+                            $this->class->addHiddenAttribute($inheritanceAttribute);
+
                             if ($this->conflicts) {
-                                if ($this->class->attributeExist($inheritanceAttribute->getName())) {
-                                    $this->class->addConflict($this->class->attributeExist($inheritanceAttribute->getName()));
+                                $conflictElement = $this->class->attributeForConflictExist($inheritanceAttribute->getName());
+                                if ($conflictElement) {
+                                    $this->class->addConflict($conflictElement);
                                     $this->class->addConflict($inheritanceAttribute);
 
                                     $this->class->removeAttribute($inheritanceAttribute->getName());
@@ -544,12 +552,24 @@ class CPPParser
                             }
                         }
                     }
+                    foreach ($this->parsedClasses[$inheritance->getName()]->getAttributes() as $inheritanceHiddenAttribute) {
+                        $this->class->addHiddenAttribute($inheritanceHiddenAttribute);
+
+                        if ($this->conflicts) {
+                            $conflictElement = $this->class->attributeForConflictExist($inheritanceHiddenAttribute->getName());
+                            if ($conflictElement) {
+                                $this->class->addConflict($conflictElement);
+                                $this->class->addConflict($inheritanceHiddenAttribute);
+
+                                $this->class->removeAttribute($inheritanceHiddenAttribute->getName());
+                            }
+                        }
+                    }
                     foreach ($this->parsedClasses[$inheritance->getName()]->getMethods() as $inheritanceMethod) {
                         if (CPPPrivacy::isAllowedToInheritance(
                             $inheritanceMethod->getPrivacy(),
                             $inheritance->getPrivacy()
-                        )
-                        ) {
+                        )) {
                             $methodExist = $this->class->methodExist($inheritanceMethod);
                             if (!$methodExist) {
                                 $method = clone $inheritanceMethod;
@@ -559,21 +579,42 @@ class CPPParser
                                 ));
                                 $this->class->addMethod($method);
                             } else {
+                                $this->class->addHiddenMethod($inheritanceMethod);
+
                                 if ($this->conflicts) {
-                                    $this->class->addConflict($this->class->methodExist($inheritanceMethod));
+                                    $conflictElement = $this->class->methodForConflictExist($inheritanceMethod);
+                                    if($conflictElement) {
+                                        $this->class->addConflict($conflictElement);
+                                        $this->class->addConflict($inheritanceMethod);
+
+                                        $this->class->removeMethod($inheritanceMethod);
+                                    }
+                                }
+                            }
+                        } else {
+                            $this->class->addHiddenMethod($inheritanceMethod);
+
+                            if ($this->conflicts) {
+                                $conflictElement = $this->class->methodForConflictExist($inheritanceMethod);
+                                if ($conflictElement) {
+                                    $this->class->addConflict($conflictElement);
                                     $this->class->addConflict($inheritanceMethod);
 
                                     $this->class->removeMethod($inheritanceMethod);
                                 }
                             }
-                        } else {
-                            if ($this->conflicts) {
-                                if ($this->class->attributeExist($inheritanceMethod->getName())) {
-                                    $this->class->addConflict($this->class->attributeExist($inheritanceMethod->getName()));
-                                    $this->class->addConflict($inheritanceMethod);
+                        }
+                    }
+                    foreach($this->parsedClasses[$inheritance->getName()]->getHiddenMethods() as $inheritanceHiddenMethod) {
+                        $this->class->addHiddenMethod($inheritanceHiddenMethod);
 
-                                    $this->class->removeAttribute($inheritanceMethod->getName());
-                                }
+                        if ($this->conflicts) {
+                            $conflictElement = $this->class->methodForConflictExist($inheritanceHiddenMethod);
+                            if($conflictElement) {
+                                $this->class->addConflict($conflictElement);
+                                $this->class->addConflict($inheritanceHiddenMethod);
+
+                                $this->class->removeMethod($inheritanceHiddenMethod);
                             }
                         }
                     }
