@@ -523,15 +523,15 @@ class CPPParser
             case CPPParserState::CLASS_ADD:
                 foreach ($this->class->getInheritances() as $inheritance) {
                     foreach ($this->parsedClasses[$inheritance->getName()]->getAttributes() as $inheritanceAttribute) {
+                        $attributeExist = $this->class->attributeExist($inheritanceAttribute->getName());
+                        if ($attributeExist) {
+                            throw new ElementConflictDuringInheritance;
+                        }
                         if (CPPPrivacy::isAllowedToInheritance(
                             $inheritanceAttribute->getPrivacy(),
                             $inheritance->getPrivacy()
                         )
                         ) {
-                            $attributeExist = $this->class->attributeExist($inheritanceAttribute->getName());
-                            if ($attributeExist) {
-                                throw new ElementConflictDuringInheritance;
-                            }
                             $attribute = clone $inheritanceAttribute;
                             $attribute->setPrivacy(
                                 CPPPrivacy::getInheritanceType(
@@ -553,7 +553,7 @@ class CPPParser
                             }
                         }
                     }
-                    foreach ($this->parsedClasses[$inheritance->getName()]->getAttributes() as $inheritanceHiddenAttribute) {
+                    foreach ($this->parsedClasses[$inheritance->getName()]->getHiddenAttributes() as $inheritanceHiddenAttribute) {
                         $this->class->addHiddenAttribute($inheritanceHiddenAttribute);
 
                         if ($this->conflicts) {
@@ -564,17 +564,22 @@ class CPPParser
 
                                 $this->class->removeAttribute($inheritanceHiddenAttribute->getName());
                             }
+                        } else {
+                            $exist = $this->class->attributeForConflictExist($inheritanceHiddenAttribute->getName());
+                            if ($exist) {
+                                throw new ElementConflictDuringInheritance;
+                            }
                         }
                     }
                     foreach ($this->parsedClasses[$inheritance->getName()]->getMethods() as $inheritanceMethod) {
+                        $methodExist = $this->class->methodExist($inheritanceMethod);
+                        if ($methodExist) {
+                            throw new ElementConflictDuringInheritance;
+                        }
                         if (CPPPrivacy::isAllowedToInheritance(
                             $inheritanceMethod->getPrivacy(),
                             $inheritance->getPrivacy()
                         )) {
-                            $methodExist = $this->class->methodExist($inheritanceMethod);
-                            if ($methodExist) {
-                                throw new ElementConflictDuringInheritance;
-                            }
                             $method = clone $inheritanceMethod;
                             $method->setPrivacy(CPPPrivacy::getInheritanceType(
                                 $inheritanceMethod->getPrivacy(),
@@ -596,7 +601,7 @@ class CPPParser
                         }
                     }
                     foreach($this->parsedClasses[$inheritance->getName()]->getHiddenMethods() as $inheritanceHiddenMethod) {
-                        $this->class->addHiddenMethod($inheritanceHiddenMethod);
+                         $this->class->addHiddenMethod($inheritanceHiddenMethod);
 
                         if ($this->conflicts) {
                             $conflictElement = $this->class->methodForConflictExist($inheritanceHiddenMethod);
@@ -605,6 +610,11 @@ class CPPParser
                                 $this->class->addConflict($inheritanceHiddenMethod);
 
                                 $this->class->removeMethod($inheritanceHiddenMethod);
+                            }
+                        } else {
+                            $exist = $this->class->methodForConflictExist($inheritanceHiddenMethod);
+                            if ($exist) {
+                                throw new ElementConflictDuringInheritance;
                             }
                         }
                     }
