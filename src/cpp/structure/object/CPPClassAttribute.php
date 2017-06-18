@@ -35,6 +35,9 @@ class CPPClassAttribute implements CPPClassElement
     /** @var string */
     private $fromInheritanceClassName;
 
+    /** @var bool */
+    private $using;
+
     /**
      * CPPClassAttribute constructor.
      *
@@ -43,14 +46,16 @@ class CPPClassAttribute implements CPPClassElement
      * @param string $scope
      * @param string $privacy
      * @param string $fromInheritanceClassName
+     * @param bool $using
      */
-    public function __construct($name, $type, $scope, $privacy, $fromInheritanceClassName = null)
+    public function __construct($name, $type, $scope, $privacy, $fromInheritanceClassName = null, $using = false)
     {
         $this->name = $name;
         $this->type = $type;
         $this->scope = $scope ? $scope : 'instance';
         $this->privacy = $privacy ? $privacy : CPPPrivacy::PRIVATE_TYPE;
         $this->fromInheritanceClassName = $fromInheritanceClassName;
+        $this->using = $using;
     }
 
     /**
@@ -115,6 +120,14 @@ class CPPClassAttribute implements CPPClassElement
     public function setPrivacy($privacy)
     {
         $this->privacy = $privacy;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUsing()
+    {
+        return $this->using;
     }
 
 }

@@ -192,16 +192,15 @@ class CPPParser
 
     /**
      * @param string $state
-     *
-     * @throws ScopeWithoutAnyVariableOrMethod
-     * @throws InvalidType
+     * @return int
      * @throws DuplicatedPrivacy
+     * @throws ElementConflictDuringInheritance
+     * @throws InvalidInputFormat
+     * @throws InvalidType
+     * @throws ScopeWithoutAnyVariableOrMethod
+     * @throws StaticCanNotBeVirtual
      * @throws UnknownInheritanceClassName
      * @throws UnknownTypeClassName
-     * @throws StaticCanNotBeVirtual
-     * @throws InvalidInputFormat
-     *
-     * @return int
      */
     private function recursiveParser($state = CPPParserState::START_POINT)
     {
@@ -384,7 +383,8 @@ class CPPParser
                                     $type,
                                     $this->privacy ? CPPPrivacy::STATIC_TYPE : null,
                                     $this->privacy,
-                                    $className
+                                    $className,
+                                    true
                                 );
                                 $this->class->addAttribute($attribute);
 
@@ -524,8 +524,13 @@ class CPPParser
                 foreach ($this->class->getInheritances() as $inheritance) {
                     foreach ($this->parsedClasses[$inheritance->getName()]->getAttributes() as $inheritanceAttribute) {
                         $attributeExist = $this->class->attributeExist($inheritanceAttribute->getName());
-                        if ($attributeExist && $attributeExist->getFromInheritanceClassName() != $this->class->getName()) {
+                        // avoid inheritance conflict by overriding attribute
+                        if ($attributeExist && $attributeExist->getFromInheritanceClassName() != $this->class->getName() && !$attributeExist->isUsing()) {
                             throw new ElementConflictDuringInheritance;
+                        }
+                        // avoid inheritance conflict by using Using::
+                        if($attributeExist && $attributeExist->isUsing()) {
+                            continue;
                         }
                         if (CPPPrivacy::isAllowedToInheritance(
                             $inheritanceAttribute->getPrivacy(),
@@ -566,7 +571,7 @@ class CPPParser
                             }
                         } else {
                             $exist = $this->class->attributeForConflictExist($inheritanceHiddenAttribute->getName());
-                            if ($exist && $inheritanceHiddenAttribute->getFromInheritanceClassName() != $this->class->getName()) {
+                            if ($exist && $inheritanceHiddenAttribute->getFromInheritanceClassName() != $this->class->getName() && !$exist->isUsing()) {
                                 throw new ElementConflictDuringInheritance;
                             }
                         }
