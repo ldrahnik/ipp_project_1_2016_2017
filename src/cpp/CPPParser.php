@@ -524,7 +524,7 @@ class CPPParser
                 foreach ($this->class->getInheritances() as $inheritance) {
                     foreach ($this->parsedClasses[$inheritance->getName()]->getAttributes() as $inheritanceAttribute) {
                         $attributeExist = $this->class->attributeExist($inheritanceAttribute->getName());
-                        if ($attributeExist) {
+                        if ($attributeExist && $attributeExist->getFromInheritanceClassName() != $this->class->getName()) {
                             throw new ElementConflictDuringInheritance;
                         }
                         if (CPPPrivacy::isAllowedToInheritance(
@@ -566,14 +566,14 @@ class CPPParser
                             }
                         } else {
                             $exist = $this->class->attributeForConflictExist($inheritanceHiddenAttribute->getName());
-                            if ($exist) {
+                            if ($exist && $inheritanceHiddenAttribute->getFromInheritanceClassName() != $this->class->getName()) {
                                 throw new ElementConflictDuringInheritance;
                             }
                         }
                     }
                     foreach ($this->parsedClasses[$inheritance->getName()]->getMethods() as $inheritanceMethod) {
                         $methodExist = $this->class->methodExist($inheritanceMethod);
-                        if ($methodExist) {
+                        if ($methodExist && $methodExist->getFromInheritanceClassName() != $this->class->getName()) {
                             throw new ElementConflictDuringInheritance;
                         }
                         if (CPPPrivacy::isAllowedToInheritance(
@@ -613,7 +613,7 @@ class CPPParser
                             }
                         } else {
                             $exist = $this->class->methodForConflictExist($inheritanceHiddenMethod);
-                            if ($exist) {
+                            if ($exist && $exist->getFromInheritanceClassName() != $this->class->getName()) {
                                 throw new ElementConflictDuringInheritance;
                             }
                         }
