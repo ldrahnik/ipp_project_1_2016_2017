@@ -13,6 +13,7 @@ namespace CLS\CPP;
 
 use CLS\CPP\Error\Error;
 use CLS\CPP\Exception\DuplicatedPrivacy;
+use CLS\CPP\Exception\ElementConflictDuringInheritance;
 use CLS\CPP\Exception\InvalidInputFormat;
 use CLS\CPP\Exception\InvalidType;
 use CLS\CPP\Exception\ScopeWithoutAnyVariableOrMethod;
@@ -122,6 +123,8 @@ class CPPParser
             return Error::INVALID_INPUT_FORMAT;
         } catch (InvalidInputFormat $invalidInputFormat) {
             return Error::INVALID_INPUT_FORMAT;
+        } catch (ElementConflictDuringInheritance $elementConflictDuringInheritance) {
+            return Error::ELEMENT_CONFLICT_DURING_INHERITANCE;
         } catch (\Exception $exception) {
             return Error::STANDARD;
         }
@@ -526,27 +529,16 @@ class CPPParser
                         )
                         ) {
                             $attributeExist = $this->class->attributeExist($inheritanceAttribute->getName());
-                            if (!$attributeExist) {
-                                $attribute = clone $inheritanceAttribute;
-                                $attribute->setPrivacy(
-                                    CPPPrivacy::getInheritanceType(
-                                        $inheritanceAttribute->getPrivacy(),
-                                        $inheritance->getPrivacy()
-                                    ));
-                                $this->class->addAttribute($attribute);
-                            } else {
-                                $this->class->addHiddenAttribute($inheritanceAttribute);
-
-                                if ($this->conflicts) {
-                                    $conflictElement = $this->class->attributeExist($inheritanceAttribute->getName());
-                                    if($conflictElement) {
-                                        $this->class->addConflict($conflictElement);
-                                        $this->class->addConflict($inheritanceAttribute);
-
-                                        $this->class->removeAttribute($inheritanceAttribute->getName());
-                                    }
-                                }
+                            if ($attributeExist) {
+                                throw new ElementConflictDuringInheritance;
                             }
+                            $attribute = clone $inheritanceAttribute;
+                            $attribute->setPrivacy(
+                                CPPPrivacy::getInheritanceType(
+                                    $inheritanceAttribute->getPrivacy(),
+                                    $inheritance->getPrivacy()
+                                ));
+                            $this->class->addAttribute($attribute);
                         } else {
                             $this->class->addHiddenAttribute($inheritanceAttribute);
 
@@ -580,26 +572,15 @@ class CPPParser
                             $inheritance->getPrivacy()
                         )) {
                             $methodExist = $this->class->methodExist($inheritanceMethod);
-                            if (!$methodExist) {
-                                $method = clone $inheritanceMethod;
-                                $method->setPrivacy(CPPPrivacy::getInheritanceType(
-                                    $inheritanceMethod->getPrivacy(),
-                                    $inheritance->getPrivacy()
-                                ));
-                                $this->class->addMethod($method);
-                            } else {
-                                $this->class->addHiddenMethod($inheritanceMethod);
-
-                                if ($this->conflicts) {
-                                    $conflictElement = $this->class->methodForConflictExist($inheritanceMethod);
-                                    if($conflictElement) {
-                                        $this->class->addConflict($conflictElement);
-                                        $this->class->addConflict($inheritanceMethod);
-
-                                        $this->class->removeMethod($inheritanceMethod);
-                                    }
-                                }
+                            if ($methodExist) {
+                                throw new ElementConflictDuringInheritance;
                             }
+                            $method = clone $inheritanceMethod;
+                            $method->setPrivacy(CPPPrivacy::getInheritanceType(
+                                $inheritanceMethod->getPrivacy(),
+                                $inheritance->getPrivacy()
+                            ));
+                            $this->class->addMethod($method);
                         } else {
                             $this->class->addHiddenMethod($inheritanceMethod);
 
