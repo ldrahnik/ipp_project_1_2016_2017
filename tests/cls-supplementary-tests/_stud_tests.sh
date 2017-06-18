@@ -117,7 +117,3 @@ echo -n $? > test11.!!!
 # test12: BONUS: vypis konfliktniho clenu ve tride; Expected output: test12.out; Expected return code: 0
 $INTERPRETER $TASK.$EXTENSION --input="${LOCAL_IN_PATH3}test12.in" --output=${LOCAL_OUT_PATH}test12.out --details=C --conflicts 2> ${LOG_PATH}test12.err
 echo -n $? > test12.!!!
-
-# test13: Diamant problém, test zápisu pouze jednoho členu do konfliktů místo dvou
-$INTERPRETER $TASK.$EXTENSION --input="${LOCAL_IN_PATH3}test13.in" --output=${LOCAL_OUT_PATH}test12.out --details=D --conflicts 2> ${LOG_PATH}test12.err
-echo -n $? > test12.!!!
