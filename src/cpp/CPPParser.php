@@ -12,7 +12,6 @@ namespace CLS\CPP;
  */
 
 use CLS\CPP\Error\Error;
-use CLS\CPP\Exception\DuplicatedPrivacy;
 use CLS\CPP\Exception\ElementConflictDuringInheritance;
 use CLS\CPP\Exception\InvalidInputFormat;
 use CLS\CPP\Exception\InvalidType;
@@ -550,7 +549,7 @@ class CPPParser
                     }
                     foreach ($this->parsedClasses[$inheritance->getName()]->getMethods() as $inheritanceMethod) {
                         $methodExist = $this->class->methodExist($inheritanceMethod);
-                        if ($methodExist && $methodExist->getFromInheritanceClassName() != $this->class->getName()) {
+                        if ($methodExist && !$inheritanceMethod->getPureVirtual() && $methodExist->getFromInheritanceClassName() != $this->class->getName()) {
                             throw new ElementConflictDuringInheritance;
                         }
                         if (CPPPrivacy::isAllowedToInheritance(
@@ -661,6 +660,9 @@ class CPPParser
                             $this->class->addMethod($this->method);
 
                             if ($this->recursiveParser(CPPParserState::METHOD_ARGUMENTS)) {
+                                return 1;
+                            }
+                            if ($this->recursiveParser(CPPParserState::RIGHT_BRACKET)) {
                                 return 1;
                             }
                             if (!$this->recursiveParser(CPPParserState::LEFT_CURLY_BRACKET)) {
