@@ -496,7 +496,7 @@ class CPPParser
                     foreach ($this->parsedClasses[$inheritance->getName()]->getAttributes() as $inheritanceAttribute) {
                         $attributeExist = $this->class->attributeExist($inheritanceAttribute->getName());
                         // avoid inheritance conflict by overriding attribute
-                        if ($attributeExist && $attributeExist->getFromInheritanceClassName() != $this->class->getName() && !$attributeExist->isUsing()) {
+                        if (!$this->conflicts && $attributeExist && $attributeExist->getFromInheritanceClassName() != $this->class->getName() && !$attributeExist->isUsing()) {
                             throw new ElementConflictDuringInheritance;
                         }
                         // avoid inheritance conflict by using Using::
@@ -549,7 +549,7 @@ class CPPParser
                     }
                     foreach ($this->parsedClasses[$inheritance->getName()]->getMethods() as $inheritanceMethod) {
                         $methodExist = $this->class->methodExist($inheritanceMethod);
-                        if ($methodExist && !$inheritanceMethod->getPureVirtual() && $methodExist->getFromInheritanceClassName() != $this->class->getName()) {
+                        if (!$this->conflicts && $methodExist && !$inheritanceMethod->getPureVirtual() && $methodExist->getFromInheritanceClassName() != $this->class->getName()) {
                             throw new ElementConflictDuringInheritance;
                         }
                         if (CPPPrivacy::isAllowedToInheritance(
