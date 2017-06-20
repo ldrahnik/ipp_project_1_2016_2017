@@ -183,7 +183,7 @@ class CPPClass
             return false;
         }
 
-        $keyToRemove = null;
+        $methodToRemove = null;
         foreach ($this->getMethods() as $key => $method) {
             if(!$m->isPureVirtual()) {
                 continue;
@@ -194,12 +194,12 @@ class CPPClass
             }
 
             if($this->isMethodTheSame($m, $method)) {
-                $keyToRemove = $key;
+                $methodToRemove = $method;
                 break;
             }
         }
-        if($keyToRemove) {
-            unset($this->methods[$keyToRemove]);
+        if($methodToRemove) {
+            unset($this->methods[$methodToRemove->getName()][count($methodToRemove->getArguments())]);
             return true;
         }
 
@@ -283,7 +283,7 @@ class CPPClass
      */
     public function addMethod(CPPClassMethod $method)
     {
-        $this->methods[$method->getName()] = $method;
+        $this->methods[$method->getName()][count($method->getArguments())] = $method;
     }
 
     /**
@@ -291,7 +291,7 @@ class CPPClass
      */
     public function addHiddenMethod(CPPClassMethod $method)
     {
-        $this->hiddenMethods[$method->getName()] = $method;
+        $this->hiddenMethods[$method->getName()][count($method->getArguments())] = $method;
     }
 
     /**
@@ -299,7 +299,11 @@ class CPPClass
      */
     public function getMethods()
     {
-        return $this->methods;
+        $result = array();
+        foreach($this->methods as $name => $methods) {
+            $result = array_merge($result, $methods);
+        }
+        return $result;
     }
 
     /**
@@ -307,7 +311,11 @@ class CPPClass
      */
     public function getHiddenMethods()
     {
-        return $this->hiddenMethods;
+        $result = array();
+        foreach($this->hiddenMethods as $name => $methods) {
+            $result = array_merge($result, $methods);
+        }
+        return $result;
     }
 
     /**
@@ -439,7 +447,7 @@ class CPPClass
         $result = array();
         foreach($this->getMethods() as $method) {
             if(!$this->existConflict($method)) {
-                $result[$method->getName()] = $method;
+                $result[] = $method;
             }
         }
         return $result;

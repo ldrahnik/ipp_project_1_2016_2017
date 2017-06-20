@@ -415,9 +415,7 @@ class CPPParser
                 break;
             case CPPParserState::METHOD_ARGUMENTS:
                 $token = $this->getToken();
-               /* if ($token == CPPParserState::RIGHT_BRACKET) {
-                    return 0;
-                }*/
+
                 if ($token == CPPParserState::VOID) {
                     return 0;
                 }
@@ -500,7 +498,7 @@ class CPPParser
                             throw new ElementConflictDuringInheritance;
                         }
                         // avoid inheritance conflict by using Using::
-                        if($attributeExist && $attributeExist->isUsing()) {
+                        if ($attributeExist && $attributeExist->isUsing()) {
                             continue;
                         }
                         if (CPPPrivacy::isAllowedToInheritance(
@@ -655,7 +653,6 @@ class CPPParser
                                 false,
                                 $this->class->getName()
                             );
-                            $this->class->addMethod($this->method);
 
                             if ($this->recursiveParser(CPPParserState::RIGHT_BRACKET)) {
                                 $this->lastTokenWasNotUsed();
@@ -671,6 +668,7 @@ class CPPParser
                                     return 1;
                                 }
                             }
+                            $this->class->addMethod($this->method);
                             if ($this->recursiveParser(CPPParserState::SEMICOLON)) {
                                 $this->lastTokenWasNotUsed();
                             } else {
