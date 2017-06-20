@@ -415,9 +415,9 @@ class CPPParser
                 break;
             case CPPParserState::METHOD_ARGUMENTS:
                 $token = $this->getToken();
-                if ($token == CPPParserState::RIGHT_BRACKET) {
+               /* if ($token == CPPParserState::RIGHT_BRACKET) {
                     return 0;
-                }
+                }*/
                 if ($token == CPPParserState::VOID) {
                     return 0;
                 }
@@ -649,7 +649,7 @@ class CPPParser
                             $this->method = new CPPClassMethod(
                                 $this->name,
                                 $this->type,
-                                null,
+                                $this->scope,
                                 $this->privacy,
                                 array(),
                                 false,
@@ -657,12 +657,18 @@ class CPPParser
                             );
                             $this->class->addMethod($this->method);
 
-                            if ($this->recursiveParser(CPPParserState::METHOD_ARGUMENTS)) {
-                                return 1;
-                            }
                             if ($this->recursiveParser(CPPParserState::RIGHT_BRACKET)) {
-                                return 1;
+                                $this->lastTokenWasNotUsed();
+                                if ($this->recursiveParser(CPPParserState::METHOD_ARGUMENTS)) {
+                                    return 1;
+                                }
+                                if ($this->recursiveParser(CPPParserState::RIGHT_BRACKET)) {
+                                    return 1;
+                                }
                             }
+                            /*if ($this->recursiveParser(CPPParserState::RIGHT_BRACKET)) {
+                                return 1;
+                            }*/
                             if (!$this->recursiveParser(CPPParserState::LEFT_CURLY_BRACKET)) {
                                 if ($this->recursiveParser(CPPParserState::RIGHT_CURLY_BRACKET)) {
                                     return 1;
