@@ -530,8 +530,6 @@ class CPPParser
                         }
                     }
                     foreach ($this->parsedClasses[$inheritance->getName()]->getHiddenAttributes() as $inheritanceHiddenAttribute) {
-                        $this->class->addHiddenAttribute($inheritanceHiddenAttribute);
-
                         if ($this->conflicts) {
                             $conflictElement = $this->class->attributeForConflictExist($inheritanceHiddenAttribute->getName());
                             if ($conflictElement) {
@@ -546,6 +544,7 @@ class CPPParser
                                 throw new ElementConflictDuringInheritance;
                             }
                         }
+                        $this->class->addHiddenAttribute($inheritanceHiddenAttribute);
                     }
                     foreach ($this->parsedClasses[$inheritance->getName()]->getMethods() as $inheritanceMethod) {
                         $methodExist = $this->class->methodExist($inheritanceMethod);
@@ -579,8 +578,6 @@ class CPPParser
                         }
                     }
                     foreach($this->parsedClasses[$inheritance->getName()]->getHiddenMethods() as $inheritanceHiddenMethod) {
-                         $this->class->addHiddenMethod($inheritanceHiddenMethod);
-
                         if ($this->conflicts) {
                             $conflictElement = $this->class->methodForConflictExist($inheritanceHiddenMethod);
                             if($conflictElement) {
@@ -595,6 +592,7 @@ class CPPParser
                                 throw new ElementConflictDuringInheritance;
                             }
                         }
+                        $this->class->addHiddenMethod($inheritanceHiddenMethod);
                     }
                 }
 
