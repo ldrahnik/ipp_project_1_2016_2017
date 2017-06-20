@@ -553,12 +553,14 @@ class CPPParser
                             $inheritanceMethod->getPrivacy(),
                             $inheritance->getPrivacy()
                         )) {
-                            $method = clone $inheritanceMethod;
-                            $method->setPrivacy(CPPPrivacy::getInheritanceType(
-                                $inheritanceMethod->getPrivacy(),
-                                $inheritance->getPrivacy()
-                            ));
-                            $this->class->addMethod($method);
+                            if(!$methodExist) {
+                                $method = clone $inheritanceMethod;
+                                $method->setPrivacy(CPPPrivacy::getInheritanceType(
+                                    $inheritanceMethod->getPrivacy(),
+                                    $inheritance->getPrivacy()
+                                ));
+                                $this->class->addMethod($method);
+                            }
                         } else {
                             if(!$inheritanceMethod->getPureVirtual()) {
                                 $this->class->addHiddenMethod($inheritanceMethod);
