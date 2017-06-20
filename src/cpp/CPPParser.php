@@ -16,7 +16,6 @@ use CLS\CPP\Exception\DuplicatedPrivacy;
 use CLS\CPP\Exception\ElementConflictDuringInheritance;
 use CLS\CPP\Exception\InvalidInputFormat;
 use CLS\CPP\Exception\InvalidType;
-use CLS\CPP\Exception\ScopeWithoutAnyVariableOrMethod;
 use CLS\CPP\Exception\StaticCanNotBeVirtual;
 use CLS\CPP\Exception\UnknownInheritanceClassName;
 use CLS\CPP\Exception\UnknownTypeClassName;
@@ -62,12 +61,6 @@ class CPPParser
     /** @var string|null */
     private $type;
 
-    /** @var CPPPrivacy[] */
-    private $usedPrivacies;
-
-    /** @var bool */
-    private $privacyWithAtleastOneVariableOrMethod;
-
     /** @var bool */
     private $conflicts;
 
@@ -87,13 +80,11 @@ class CPPParser
         $this->class = null;
         $this->method = null;
         $this->privacy = null;
-        $this->usedPrivacies = array();
         $this->scope = null;
         $this->type = null;
         $this->typeWordCount = 0;
         $this->name = null;
         $this->parsedClasses = array();
-        $this->privacyWithAtleastOneVariableOrMethod = false;
         $this->conflicts = $conflicts;
     }
 
@@ -109,11 +100,7 @@ class CPPParser
                 return $returnValue;
             }
             return 0;
-        } catch (ScopeWithoutAnyVariableOrMethod $scopeWithoutAnyVariableOrMethod) {
-            return Error::INVALID_INPUT_FORMAT;
         } catch (InvalidType $invalidType) {
-            return Error::INVALID_INPUT_FORMAT;
-        } catch (DuplicatedPrivacy $duplicatedPrivacy) {
             return Error::INVALID_INPUT_FORMAT;
         } catch (UnknownInheritanceClassName $unknownInheritanceClassName) {
             return Error::INVALID_INPUT_FORMAT;
@@ -193,11 +180,9 @@ class CPPParser
     /**
      * @param string $state
      * @return int
-     * @throws DuplicatedPrivacy
      * @throws ElementConflictDuringInheritance
      * @throws InvalidInputFormat
      * @throws InvalidType
-     * @throws ScopeWithoutAnyVariableOrMethod
      * @throws StaticCanNotBeVirtual
      * @throws UnknownInheritanceClassName
      * @throws UnknownTypeClassName
@@ -271,7 +256,6 @@ class CPPParser
                     return 1;
                 }
                 $this->privacy = $privacy;
-                $this->privacyWithAtleastOneVariableOrMethod = false;
                 break;
             case CPPParserState::CLASS_INHERITANCE_NAME:
                 $className = $this->getToken();
@@ -316,9 +300,6 @@ class CPPParser
             case CPPParserState::CLASS_BODY:
                 $token = $this->getToken();
                 if ($token == CPPParserState::RIGHT_CURLY_BRACKET) {
-                    if ($this->privacy && !$this->privacyWithAtleastOneVariableOrMethod) {
-                        throw new ScopeWithoutAnyVariableOrMethod();
-                    }
                     if ($this->recursiveParser(CPPParserState::SEMICOLON)) {
                         return 1;
                     }
@@ -335,12 +316,8 @@ class CPPParser
                         if ($this->recursiveParser(CPPParserState::COLON)) {
                             return 1;
                         }
-                        if (array_key_exists($token, array_flip($this->usedPrivacies))) {
-                           throw new DuplicatedPrivacy($token);
-                        }
 
                         $this->privacy = $token;
-                        $this->usedPrivacies[] = $token;
                     } else {
                         if (CPPPrivacy::isVirtual($token)) {
                             $this->method = new CPPClassMethod(
@@ -356,7 +333,6 @@ class CPPParser
                         } else {
                             // TODO: add support using::method
                             if (CPPPrivacy::isUsing($token)) {
-                                $this->privacyWithAtleastOneVariableOrMethod = true;
                                 if ($this->recursiveParser(CPPParserState::ALREADY_DEFINED_CLASS_NAME)) {
                                     return 1;
                                 }
@@ -403,7 +379,6 @@ class CPPParser
                 }
                 break;
             case CPPParserState::METHOD_ADD:
-                $this->privacyWithAtleastOneVariableOrMethod = true;
                 $this->class->addMethod($this->method);
                 $this->method = null;
                 break;
@@ -589,15 +564,17 @@ class CPPParser
                             ));
                             $this->class->addMethod($method);
                         } else {
-                            $this->class->addHiddenMethod($inheritanceMethod);
+                            if(!$inheritanceMethod->getPureVirtual()) {
+                                $this->class->addHiddenMethod($inheritanceMethod);
 
-                            if ($this->conflicts) {
-                                $conflictElement = $this->class->methodForConflictExist($inheritanceMethod);
-                                if ($conflictElement) {
-                                    $this->class->addConflict($conflictElement);
-                                    $this->class->addConflict($inheritanceMethod);
+                                if ($this->conflicts) {
+                                    $conflictElement = $this->class->methodForConflictExist($inheritanceMethod);
+                                    if ($conflictElement) {
+                                        $this->class->addConflict($conflictElement);
+                                        $this->class->addConflict($inheritanceMethod);
 
-                                    $this->class->removeMethod($inheritanceMethod);
+                                        $this->class->removeMethod($inheritanceMethod);
+                                    }
                                 }
                             }
                         }
@@ -643,16 +620,13 @@ class CPPParser
 
                 $this->parsedClasses[$this->class->getName()] = $this->class;
                 $this->class = null;
-                $this->usedPrivacies = array();
                 $this->privacy = null;
-                $this->privacyWithAtleastOneVariableOrMethod = false;
                 $this->recursiveParser(CPPParserState::START_POINT);
                 break;
             case CPPParserState::SOMETHING_TAIL:
                 $token = $this->getToken();
 
                 if ($token == CPPParserState::SEMICOLON) {
-                    $this->privacyWithAtleastOneVariableOrMethod = true;
                     $attribute = new CPPClassAttribute($this->name,
                         $this->type,
                         $this->scope,
@@ -663,7 +637,6 @@ class CPPParser
                         return 1;
                     }
                 } else if ($token == CPPParserState::COMMA) {
-                    $this->privacyWithAtleastOneVariableOrMethod = true;
                     $attribute = new CPPClassAttribute($this->name,
                         $this->type,
                         $this->scope,
@@ -676,7 +649,6 @@ class CPPParser
                         }
                     } else {
                         if ($token == CPPParserState::LEFT_BRACKET) {
-                            $this->privacyWithAtleastOneVariableOrMethod = true;
                             $this->method = new CPPClassMethod(
                                 $this->name,
                                 $this->type,
