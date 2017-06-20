@@ -666,9 +666,6 @@ class CPPParser
                                     return 1;
                                 }
                             }
-                            /*if ($this->recursiveParser(CPPParserState::RIGHT_BRACKET)) {
-                                return 1;
-                            }*/
                             if (!$this->recursiveParser(CPPParserState::LEFT_CURLY_BRACKET)) {
                                 if ($this->recursiveParser(CPPParserState::RIGHT_CURLY_BRACKET)) {
                                     return 1;
