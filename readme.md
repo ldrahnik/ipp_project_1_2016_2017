@@ -1,26 +1,26 @@
 IPP 1. projekt
 ==============
 
-###Requirements:
+### Requirements:
 
 PHP5.6, composer, bash, git
 
 
-###Initialization commands
+### Initialization commands
 
 ```
 $ cd /project/root/
 $ composer dump-autoload
 ```
 
-###Create archive command
+### Create archive command
 
 ```
 $ cd /project/root/
 $ bash create_archive
 ```
 
-###Test archive command
+### Test archive command
 
 ```
 $ cd /project/root/
