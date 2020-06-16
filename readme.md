@@ -8,23 +8,20 @@ ASSESSMENT
 PHP5.6, composer, bash, git
 
 
-### Initialization commands
+### Initialization
 
 ```
-$ cd /project/root/
 $ composer dump-autoload
 ```
 
-### Create archive command
+### Create archive
 
 ```
-$ cd /project/root/
 $ bash create_archive
 ```
 
-### Test archive command
+### Test archive
 
 ```
-$ cd /project/root/
 $ bash test_archive
 ```
