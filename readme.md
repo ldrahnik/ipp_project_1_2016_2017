@@ -1,5 +1,7 @@
-IPP 1. projekt
-==============
+ASSESSMENT 
+==========
+
+4/12b ([assessment report](https://github.com/ldrahnik/ipp_project_1_2016_2017/issues/34))
 
 ### Requirements:
 
