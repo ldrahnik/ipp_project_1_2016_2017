@@ -134,8 +134,8 @@ class CLSArgumentParser
     {
         return array(
             CLSOption::HELP,
-            CLSOption::get(CLSOption::INPUT, '::'),
-            CLSOption::get(CLSOption::OUTPUT, '::'),
+            CLSOption::get(CLSOption::INPUT, ':'),
+            CLSOption::get(CLSOption::OUTPUT, ':'),
             CLSOption::get(CLSOption::PRETTY_XML, ':'),
             CLSOption::get(CLSOption::DETAILS, '::'),
             CLSOption::CONFLICTS
