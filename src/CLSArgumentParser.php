@@ -30,6 +30,7 @@ class CLSArgumentParser
 
     /** @var array */
     private $options = array(
+        CLSOption::HELP => null,
         CLSOption::INPUT => STDIN,
         CLSOption::OUTPUT => STDOUT,
         CLSOption::PRETTY_XML => 4,
@@ -74,8 +75,16 @@ class CLSArgumentParser
         }
 
         // help
-        if (array_key_exists(CLSOption::HELP, $options) || array_key_exists(CLSOption::HELP_SHORT, $options)) {
-            return count($options) == 1 ? $this->displayHelp() : Error::BAD_FORMAT_OF_INPUT_ARGS_AND_OPTIONS;
+        if($this->isHelpOptionSet($options)) {
+            $this->options[CLSOption::HELP] = true;
+
+            if(count($options) != 1) {
+                return Error::BAD_FORMAT_OF_INPUT_ARGS_AND_OPTIONS;
+            }
+
+            $this->displayHelp();
+
+            return 0;
         }
 
         // processing
@@ -118,13 +127,21 @@ class CLSArgumentParser
 
     /**
      * Display help message.
-     *
-     * @return int
      */
     private function displayHelp()
     {
         echo self::HELP_MESSAGE;
-        return 0;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isHelpOptionSet($options)
+    {
+        if (array_key_exists(CLSOption::HELP, $options) || array_key_exists(CLSOption::HELP_SHORT, $options)) {
+            return true;
+        }
+        return false;
     }
 
     /**

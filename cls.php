@@ -19,7 +19,7 @@ require(__DIR__ . "/vendor/autoload.php");
 $clsArgumentParser = new CLSArgumentParser($argv);
 $result = $clsArgumentParser->run();
 
-if($result != 0) {
+if($result != 0 || $clsArgumentParser->isOptionSet(CLSOption::HELP)) {
     exit($result);
 }
 
