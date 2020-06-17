@@ -56,7 +56,7 @@ class CLSParser
     public function __construct(
         $input = null,
         $output = null,
-        $outputIndent = 4,
+        $outputIndent,
         $mode,
         $detailsModeClass = null,
         $conflicts
