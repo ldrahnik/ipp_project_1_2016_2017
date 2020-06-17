@@ -12,7 +12,7 @@
 namespace CLS\CPP\Structure\Object;
 
 use CLS\CPP\Structure\Object\Type\CPPPrivacy;
-use CLS\CPP\Structure\Object\Type\CPPPScope;
+use CLS\CPP\Structure\Object\Type\CPPScope;
 
 /**
  * Class ClassAttribute.
@@ -52,7 +52,7 @@ class CPPClassAttribute implements CPPClassElement
     {
         $this->name = $name;
         $this->type = $type;
-        $this->scope = $scope ? $scope : 'instance';
+        $this->scope = $scope ? $scope : CPPScope::INSTANCE_TYPE;
         $this->privacy = $privacy ? $privacy : CPPPrivacy::PRIVATE_TYPE;
         $this->fromInheritanceClassName = $fromInheritanceClassName;
         $this->using = $using;

@@ -12,9 +12,9 @@
 namespace CLS\CPP\Structure\Object\Type;
 
 /**
- * Class CPPPScope.
+ * Class CPPScope.
  */
-class CPPPScope {
+class CPPScope {
 
     const STATIC_TYPE = 'static';
     const INSTANCE_TYPE = 'instance';
