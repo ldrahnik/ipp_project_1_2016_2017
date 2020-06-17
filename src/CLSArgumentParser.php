@@ -161,8 +161,8 @@ class CLSArgumentParser
     {
         $result  = "";
         $result .= CLSOption::HELP_SHORT;
-        $result .= CLSOption::get(CLSOption::INPUT_SHORT, '::');
-        $result .= CLSOption::get(CLSOption::OUTPUT_SHORT, '::');
+        $result .= CLSOption::get(CLSOption::INPUT_SHORT, ':');
+        $result .= CLSOption::get(CLSOption::OUTPUT_SHORT, ':');
         $result .= CLSOption::get(CLSOption::PRETTY_XML_SHORT, ':');
         $result .= CLSOption::get(CLSOption::DETAILS_SHORT, '::');
         $result .= CLSOption::CONFLICTS_SHORT;
