@@ -46,19 +46,19 @@ class CLSParser
     /**
      * CLS constructor.
      *
-     * @param null $input
-     * @param null $output
+     * @param $input
+     * @param $output
      * @param int $outputIndent
      * @param int $mode
      * @param string|null $detailsModeClass
      * @param boolean $conflicts
      */
     public function __construct(
-        $input = null,
-        $output = null,
+        $input,
+        $output,
         $outputIndent,
         $mode,
-        $detailsModeClass = null,
+        $detailsModeClass,
         $conflicts
     ) {
         $this->input = $input;
