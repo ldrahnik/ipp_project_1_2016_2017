@@ -74,20 +74,31 @@ class CLSParser
      */
     public function run()
     {
-        $contentToParse = '';
+        $file = null;
+        $content = '';
 
         if ($this->input == STDIN) {
             while ($line = fgets(STDIN))
-                $contentToParse .= $line;
+                $content .= $line;
         } else {
-            if (!($file = fopen($this->input, "r"))) {
-                if (!($file = fopen(__DIR__ . $this->input, "r"))) {
-                    return Error::UNEXISTING_INPUT_FILE_OR_ERROR_WHEN_OPENING_INPUT_FILE;
-                }
+
+            if (file_exists($this->input)) {
+                $file = fopen($this->input, "r");
+            } else if (file_exists(__DIR__ . $this->input)) {
+                $file = fopen(__DIR__ . $this->input, "r");
             }
-            $contentToParse = filesize($this->input) ? fread($file, filesize($this->input)) : "";
+
+            if ($file == null) {
+                return Error::UNEXISTING_INPUT_FILE_OR_ERROR_WHEN_OPENING_INPUT_FILE;
+            }
+
+            if (filesize($this->input)) {
+                $content = fread($file, filesize($this->input));
+            }
+
             fclose($file);
-            return $this->parse($contentToParse);
+
+            return $this->parse($content);
         }
 
         return 1;
