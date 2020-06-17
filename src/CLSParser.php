@@ -488,6 +488,9 @@ class CLSParser
         if ($this->output == STDOUT) {
             echo $result;
         } else {
+            if (!is_writable(dirname($this->output))) {
+                return Error::ERROR_WHEN_OPENING_OR_WRITING_OUTPUT_FILE;
+            }
             if (!($file = fopen($this->output, "w+"))) {
                 return Error::ERROR_WHEN_OPENING_OR_WRITING_OUTPUT_FILE;
             }
