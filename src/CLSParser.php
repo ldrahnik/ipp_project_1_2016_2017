@@ -170,10 +170,11 @@ class CLSParser
 
     /**
      * @param CPPClass $class
+     * @param CPPClass[] $classes
      *
      * @return XMLElement
      */
-    private function generateClassDetail(CPPClass $class)
+    private function generateClassDetail(CPPClass $class, $classes)
     {
         $classElement = new XMLElement(
             'class',
@@ -208,6 +209,7 @@ class CLSParser
 
             $conflictSourcesElements = array();
             $conflictName = null;
+            $originalPrivacy = null;
             foreach ($class->getConflicts() as $conflict) {
                 $conflictMainElement = null;
                 $conflictName = $conflict->getName();
@@ -219,6 +221,7 @@ class CLSParser
                             'type' => $conflict->getType(),
                             'scope' => $conflict->getScope()
                         ));
+                    $originalPrivacy = $classes[$conflict->getFromInheritanceClassName()]->attributeExist($conflict->getName())->getPrivacy();
                 } else {
                     if ($conflict instanceof CPPClassMethod) {
                         $conflictMainElement = new XMLElement(
@@ -257,6 +260,8 @@ class CLSParser
                             );
                         }
                         $conflictMainElement->applyXmlElement($arguments);
+
+                        $originalPrivacy = $classes[$conflict->getFromInheritanceClassName()]->methodExist($conflict->getName())->getPrivacy();
                     }
                 }
 
@@ -266,7 +271,7 @@ class CLSParser
                     ),
                     array(
                         new XMLElement(
-                            $conflict->getPrivacy(),
+                            $originalPrivacy,
                             array(),
                             array($conflictMainElement)
                         )
@@ -397,12 +402,12 @@ class CLSParser
         if ($this->detailsModeClass) {
             // append only if details class exists
             if(array_key_exists($this->detailsModeClass, $parsedClasses)) {
-                $xmlElements[] = $this->generateClassDetail($parsedClasses[$this->detailsModeClass]);
+                $xmlElements[] = $this->generateClassDetail($parsedClasses[$this->detailsModeClass], $parsedClasses);
             }
         } else {
             $xmlElements[] = $model = new XMLElement('model');
             foreach ($parsedClasses as $name => $class) {
-                $model->applyXmlElement($this->generateClassDetail($class));
+                $model->applyXmlElement($this->generateClassDetail($class, $parsedClasses));
             }
         }
 
