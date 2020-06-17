@@ -26,6 +26,7 @@ use CLS\CPP\Structure\Object\CPPInheritance;
 use CLS\CPP\Structure\Object\Type\CPPClassAttribute as CPPClassAttributeType;
 use CLS\CPP\Structure\Object\Type\CPPClassKind;
 use CLS\CPP\Structure\Object\Type\CPPPrivacy;
+use CLS\CPP\Structure\Object\Type\CPPScope;
 
 /**
  * Class CPPParser.
@@ -330,7 +331,6 @@ class CPPParser
                                 return 1;
                             }
                         } else {
-                            // TODO: add support using::method
                             if (CPPPrivacy::isUsing($token)) {
                                 if ($this->recursiveParser(CPPParserState::ALREADY_DEFINED_CLASS_NAME)) {
                                     return 1;
@@ -355,8 +355,8 @@ class CPPParser
 
                                 $attribute = clone $inheritanceAttribute;
                                 $attribute->setUsing(true);
-                                $attribute->setPrivacy($this->privacy);
-                                $attribute->setScope($this->privacy ? CPPPrivacy::STATIC_TYPE : null);
+                                $attribute->setPrivacy($this->privacy ? $this->privacy : CPPPrivacy::PRIVATE_TYPE);
+                                $attribute->setScope($this->scope ? $this->scope  : CPPScope::INSTANCE_TYPE);
 
                                 $this->class->addAttribute($attribute);
 

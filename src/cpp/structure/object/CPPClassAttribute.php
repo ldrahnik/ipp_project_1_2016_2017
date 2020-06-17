@@ -119,7 +119,7 @@ class CPPClassAttribute implements CPPClassElement
      */
     public function setPrivacy($privacy)
     {
-        $this->privacy = $privacy;
+        $this->privacy = $privacy ? $privacy : CPPPrivacy::PRIVATE_TYPE;
     }
 
     /**
