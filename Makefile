@@ -28,3 +28,19 @@ test:
 	rm -rf $(JEXAMXML_TMP_FILE)
 	rm -rf $(SUPPLEMENTARY_TESTS_SCRIPT_OUTPUT)/*
 	
+############################################ ARCHIVE
+
+ARCHIVE_NAME = xdrahn00-CLS
+
+zip:
+	zip -r ./$(ARCHIVE_NAME).zip ./CLS-doc.pdf ./src/* ./cls.php ./composer.json ./vendor/ ./rozsireni ./readme.md
+	
+unzip:
+	unzip $(ARCHIVE_NAME).zip -d $(ARCHIVE_NAME)
+	
+tree:
+	tree -a $(ARCHIVE_NAME)
+	
+testzip:
+	bash ./tests/is_it_ok.sh ./$(ARCHIVE_NAME).zip ./is_it_ok_output
+	

@@ -6,4 +6,5 @@
 !/tests/cls-supplementary-tests/ref-out/*
 /vendor/
 is_it_ok_output/*
-.~lock.Dokumentace.odt#
+/xdrahn00-CLS
+*.zip
