@@ -8,6 +8,46 @@ CLS: C++ Classes
 
 ## Příklad spuštění:
 
+```
+php5.6 ./cls.php --help
+Options:
+    --help              Display this help message
+    --input=file        Input text file which contains classes in language C++. If is parameter missing input is standard.
+    --output=file       Output text file in XML format. If is parameter missing output is standard.
+    --pretty-xml=k      Output XML formatting. Without parameter is formatting free. Default k is setup to 4. 
+    --details=class     Instead of write dependencies to output is write details of class. If there is not defined class details are write about all classes.
+    --conflicts         With enabled --details store conflicts between inherited methods and arguments (even private which are not allowed to inherite) and display that.
+```
+```
+php5.6 ./cls.php < ./tests/cls-supplementary-tests/test01.in
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <class name="A" kind="concrete">
+        <class name="B" kind="concrete">
+            <class name="D" kind="concrete"/>
+        </class>
+    </class>
+    <class name="C" kind="concrete">
+        <class name="D" kind="concrete"/>
+    </class>
+</model>
+```
+
+```
+php5.6 ./cls.php < ./tests/cls-supplementary-tests/test02.in --details=A
+<?xml version="1.0" encoding="UTF-8"?>
+<class name="A" kind="abstract">
+    <private>
+        <methods>
+            <method name="f" type="int" scope="instance">
+                <virtual pure="yes"/>
+                <arguments></arguments>
+            </method>
+        </methods>
+    </private>
+</class>
+```
+
 ## Omezení programu:
 
 ## Rozšíření programu:
