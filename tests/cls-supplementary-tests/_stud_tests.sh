@@ -22,7 +22,7 @@
 #  EXTENSION - přípona souboru s vaším skriptem (jméno skriptu je dáno úlohou) 
 #  LOCAL_IN_PATH/LOCAL_OUT_PATH - testování různých cest ke vstupním/výstupním
 #    souborům
-#  
+#
 # Další soubory archivu s doplňujícími testy:
 # V adresáři ref-out najdete referenční soubory pro výstup (*.out nebo *.xml), 
 # referenční soubory s návratovým kódem (*.!!!) a pro ukázku i soubory s 
@@ -52,12 +52,11 @@
 # upozorníme na fóru dané úlohy.
 #
 # =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-
-TASK=cls
+SCRIPT_DIR=$1
+TASK_NAME=cls
+TASK=$SCRIPT_DIR/$TASK_NAME
 INTERPRETER=php5.6
 EXTENSION=php
-#INTERPRETER=python3.6
-#EXTENSION=py
 
 # cesty ke vstupním a výstupním souborům
 LOCAL_IN_PATH="./" # (simple relative path)
@@ -67,53 +66,52 @@ LOCAL_OUT_PATH="./" # (simple relative path)
 LOCAL_OUT_PATH2="" #Alternative 1 (primitive relative path)
 LOCAL_OUT_PATH3="`pwd`/" #Alternative 2 (absolute path)
 # cesta pro ukládání chybového výstupu studentského skriptu
-LOG_PATH="./"
-
+LOG_PATH=$2/
 
 # test01: zakladni strom dedicnosti; Expected output: test01.out; Expected return code: 0
-$INTERPRETER $TASK.$EXTENSION --input=${LOCAL_IN_PATH}test01.in --output=${LOCAL_OUT_PATH}test01.out 2> ${LOG_PATH}test01.err
-echo -n $? > test01.!!!
+$INTERPRETER $TASK.$EXTENSION --input=${LOCAL_IN_PATH}test01.in --output=${LOG_PATH}test01.out 2> ${LOG_PATH}test01.err
+echo -n $? > ${LOG_PATH}test01.!!!
 
 # test02: vypis bazove tridy; Expected output: test02.out; Expected return code: 0
-$INTERPRETER $TASK.$EXTENSION --input=${LOCAL_IN_PATH}test02.in > ${LOCAL_OUT_PATH}test02.out --details=A 2> ${LOG_PATH}test02.err
-echo -n $? > test02.!!!
+$INTERPRETER $TASK.$EXTENSION --input=${LOCAL_IN_PATH}test02.in > ${LOG_PATH}test02.out --details=A 2> ${LOG_PATH}test02.err
+echo -n $? > ${LOG_PATH}test02.!!!
 
 # test03: vypis dedici tridy; Expected output: test03.out; Expected return code: 0
-$INTERPRETER $TASK.$EXTENSION --input=${LOCAL_IN_PATH}test03.in --output=${LOCAL_OUT_PATH}test03.out --details=D 2> ${LOG_PATH}test03.err
-echo -n $? > test03.!!!
+$INTERPRETER $TASK.$EXTENSION --input=${LOCAL_IN_PATH}test03.in --output=${LOG_PATH}test03.out --details=D 2> ${LOG_PATH}test03.err
+echo -n $? > ${LOG_PATH}test03.!!!
 
 # test04: dedeni ciste virtualni metody => vsechny tridy abstraktni; Expected output: test04.out; Expected return code: 0
-$INTERPRETER $TASK.$EXTENSION < "${LOCAL_IN_PATH3}test04.in" > ${LOCAL_OUT_PATH}test04.out 2> ${LOG_PATH}test04.err
-echo -n $? > test04.!!!
+$INTERPRETER $TASK.$EXTENSION < "${LOCAL_IN_PATH3}test04.in" > ${LOG_PATH}test04.out 2> ${LOG_PATH}test04.err
+echo -n $? > ${LOG_PATH}test04.!!!
 
 # test05: prepsani ciste virtualni metody => dedici tridy nejsou abstraktni; Expected output: test05.out; Expected return code: 0
-$INTERPRETER $TASK.$EXTENSION --input=${LOCAL_IN_PATH}test05.in --output=${LOCAL_OUT_PATH}test05.out 2> ${LOG_PATH}test05.err
-echo -n $? > test05.!!!
+$INTERPRETER $TASK.$EXTENSION --input=${LOCAL_IN_PATH}test05.in --output=${LOG_PATH}test05.out 2> ${LOG_PATH}test05.err
+echo -n $? > ${LOG_PATH}test05.!!!
 
 # test06: dedici schema diamant => konflikt pri dedeni; Expected output: test06.out; Expected return code: 21
-$INTERPRETER $TASK.$EXTENSION --output="${LOCAL_OUT_PATH3}test06.out" < ${LOCAL_IN_PATH}test06.in --details=D 2> ${LOG_PATH}test06.err
-echo -n $? > test06.!!!
+$INTERPRETER $TASK.$EXTENSION --output="${LOG_PATH}test06.out" < ${LOCAL_IN_PATH}test06.in --details=D 2> ${LOG_PATH}test06.err
+echo -n $? > ${LOG_PATH}test06.!!!
 
 # test07: dedici schema diamant => zabraneni konfliktu prepsanim konf. clenu; Expected output: test07.out; Expected return code: 0
-$INTERPRETER $TASK.$EXTENSION --details=D --input=${LOCAL_IN_PATH}test07.in --output=${LOCAL_OUT_PATH2}test07.out 2> ${LOG_PATH}test07.err
-echo -n $? > test07.!!!
+$INTERPRETER $TASK.$EXTENSION --details=D --input=${LOCAL_IN_PATH}test07.in --output=${LOG_PATH}test07.out 2> ${LOG_PATH}test07.err
+echo -n $? > ${LOG_PATH}test07.!!!
 
 # test08: reseni konfliktu pri dedeni kl. slovem using; Expected output: test08.out; Expected return code: 0
-$INTERPRETER $TASK.$EXTENSION --input=${LOCAL_IN_PATH}test08.in --output="${LOCAL_OUT_PATH3}test08.out" --details=C 2> ${LOG_PATH}test08.err
-echo -n $? > test08.!!!
+$INTERPRETER $TASK.$EXTENSION --input=${LOCAL_IN_PATH}test08.in --output="${LOG_PATH}test08.out" --details=C 2> ${LOG_PATH}test08.err
+echo -n $? > ${LOG_PATH}test08.!!!
 
 # test09: ukazka hlubsiho vypisu lesu dedicnosti; Expected output: test09.out; Expected return code: 0
-$INTERPRETER $TASK.$EXTENSION --input=${LOCAL_IN_PATH2}test09.in --output=${LOCAL_OUT_PATH}test09.out 2> ${LOG_PATH}test09.err
-echo -n $? > test09.!!!
+$INTERPRETER $TASK.$EXTENSION --input=${LOCAL_IN_PATH2}test09.in --output=${LOG_PATH}test09.out 2> ${LOG_PATH}test09.err
+echo -n $? > ${LOG_PATH}test09.!!!
 
 # test10: vypsani detailu vsech trid v souboru; Expected output: test10.out; Expected return code: 0
-$INTERPRETER $TASK.$EXTENSION --details --input="${LOCAL_IN_PATH3}test10.in" --output=${LOCAL_OUT_PATH}test10.out 2> ${LOG_PATH}test10.err
-echo -n $? > test10.!!!
+$INTERPRETER $TASK.$EXTENSION --details --input="${LOCAL_IN_PATH3}test10.in" --output=${LOG_PATH}test10.out 2> ${LOG_PATH}test10.err
+echo -n $? > ${LOG_PATH}test10.!!!
 
 # test11: Nevypsani zdedeneho clenu, ktery byl v dedene tride private; Expected output:  test11.out; Expected return code: 0
-$INTERPRETER $TASK.$EXTENSION --input="${LOCAL_IN_PATH3}test11.in" --output=${LOCAL_OUT_PATH}test11.out --details=B 2> ${LOG_PATH}test11.err
-echo -n $? > test11.!!!
+$INTERPRETER $TASK.$EXTENSION --input="${LOCAL_IN_PATH3}test11.in" --output=${LOG_PATH}test11.out --details=B 2> ${LOG_PATH}test11.err
+echo -n $? > ${LOG_PATH}test11.!!!
 
 # test12: BONUS: vypis konfliktniho clenu ve tride; Expected output: test12.out; Expected return code: 0
-$INTERPRETER $TASK.$EXTENSION --input="${LOCAL_IN_PATH3}test12.in" --output=${LOCAL_OUT_PATH}test12.out --details=C --conflicts 2> ${LOG_PATH}test12.err
-echo -n $? > test12.!!!
+$INTERPRETER $TASK.$EXTENSION --input="${LOCAL_IN_PATH3}test12.in" --output=${LOG_PATH}test12.out --details=C --conflicts 2> ${LOG_PATH}test12.err
+echo -n $? > ${LOG_PATH}test12.!!!

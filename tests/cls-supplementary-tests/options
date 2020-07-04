@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+<!-- Deleted Element(s) -->
+<class name="A" kind="concrete">
+<class name="B" kind="concrete">
+<class name="D" kind="concrete"/>
+</class>
+</class>
+<!-- Deleted Element(s) -->
+<class name="C" kind="concrete">
+<class name="D" kind="concrete"/>
+</class>
+<!-- Added Element(s) -->
+<private>
+<methods>
+<method name="f" type="int" scope="instance">
+<virtual pure="yes"/>
+<arguments/>
+</method>
+</methods>
+</private>
+</model>
