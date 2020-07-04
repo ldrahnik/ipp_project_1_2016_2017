@@ -97,11 +97,9 @@ class CLSParser
             }
 
             fclose($file);
-
-            return $this->parse($content);
         }
 
-        return 1;
+        return $this->parse($content);
     }
 
     /**
