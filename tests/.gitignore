@@ -1,0 +1,4 @@
+*.err
+*.!!!
+*.out
+!/cls-supplementary-tests/ref-out/*

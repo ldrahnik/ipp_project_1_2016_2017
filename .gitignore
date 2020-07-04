@@ -1,9 +1,3 @@
-# tests
-
-*.err
-*.!!!
-*.out
-!/tests/cls-supplementary-tests/ref-out/*
 /vendor/
 is_it_ok_output/*
 /xdrahn00-CLS
