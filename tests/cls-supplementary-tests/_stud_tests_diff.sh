@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Name:	Lukáš Drahník
 # Project: CLS: C++ Classes
 # Date:	4.7.2020
