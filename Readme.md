@@ -37,3 +37,57 @@ rm -rf /home/ldrahnik/projects/ipp_project_1_2016_2017/cls-supplementary-tests/j
 ```
 
 ## Odevzdané soubory:
+
+```
+xdrahn00-CLS
+├── CLS-doc.pdf
+├── cls.php
+├── composer.json
+├── readme.md
+├── rozsireni
+├── src
+│   ├── CLSArgumentParser.php
+│   ├── CLSMode.php
+│   ├── CLSOption.php
+│   ├── CLSParser.php
+│   ├── cpp
+│   │   ├── CPPParser.php
+│   │   ├── CPPParserState.php
+│   │   ├── error
+│   │   │   └── Error.php
+│   │   ├── exception
+│   │   │   ├── ElementConflictDuringInheritance.php
+│   │   │   ├── InvalidInputFormat.php
+│   │   │   ├── InvalidType.php
+│   │   │   ├── StaticCanNotBeVirtual.php
+│   │   │   ├── UnknownInheritanceClassName.php
+│   │   │   └── UnknownTypeClassName.php
+│   │   └── structure
+│   │       └── object
+│   │           ├── CPPClassAttribute.php
+│   │           ├── CPPClassElement.php
+│   │           ├── CPPClassMethodArgument.php
+│   │           ├── CPPClassMethod.php
+│   │           ├── CPPClass.php
+│   │           ├── CPPInheritance.php
+│   │           └── type
+│   │               ├── CPPClassAttribute.php
+│   │               ├── CPPClassKind.php
+│   │               ├── CPPPrivacy.php
+│   │               └── CPPScope.php
+│   └── xml
+│       └── XMLElement.php
+└── vendor
+    ├── autoload.php
+    └── composer
+        ├── autoload_classmap.php
+        ├── autoload_namespaces.php
+        ├── autoload_psr4.php
+        ├── autoload_real.php
+        ├── autoload_static.php
+        ├── ClassLoader.php
+        ├── installed.json
+        └── LICENSE
+
+10 directories, 38 files
+```
