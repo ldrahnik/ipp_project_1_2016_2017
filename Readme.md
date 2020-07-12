@@ -60,20 +60,21 @@ make test
 cd ./tests/cls-supplementary-tests && bash _stud_tests.sh  /home/ldrahnik/projects/ipp_project_1_2016_2017 /home/ldrahnik/projects/ipp_project_1_2016_2017/tests/cls-supplementary-tests/out
 # provede porovnání výstupů
 cd ./tests/cls-supplementary-tests && bash _stud_tests_diff.sh  /home/ldrahnik/projects/ipp_project_1_2016_2017/jexamxml.jar /home/ldrahnik/projects/ipp_project_1_2016_2017/cls-supplementary-tests/jexamxml_tmp /home/ldrahnik/projects/ipp_project_1_2016_2017/cls-supplementary-tests/cls_options /home/ldrahnik/projects/ipp_project_1_2016_2017/tests/cls-supplementary-tests/out /home/ldrahnik/projects/ipp_project_1_2016_2017/tests/cls-supplementary-tests/ref-out
-*******TEST01 PASSED
-*******TEST02 PASSED
-*******TEST03 PASSED
-*******TEST04 PASSED
-*******TEST05 PASSED
-*******TEST06 PASSED
-*******TEST07 PASSED
-*******TEST08 PASSED
-*******TEST09 PASSED
-*******TEST10 PASSED
-*******TEST11 PASSED
-*******TEST12 PASSED
+*******TEST test01 PASSED
+*******TEST test02 PASSED
+*******TEST test03 PASSED
+*******TEST test04 PASSED
+*******TEST test05 PASSED
+*******TEST test06 PASSED
+*******TEST test07 PASSED
+*******TEST test08 PASSED
+*******TEST test09 PASSED
+*******TEST test10 PASSED
+*******TEST test11 PASSED
+*******TEST test12 PASSED
 # úklid
 rm -rf /home/ldrahnik/projects/ipp_project_1_2016_2017/cls-supplementary-tests/jexamxml_tmp
+rm -rf /home/ldrahnik/projects/ipp_project_1_2016_2017/tests/cls-supplementary-tests/out/*
 ```
 
 ## Odevzdané soubory:
